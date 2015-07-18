@@ -5,7 +5,6 @@
             <param name="ConversionPattern" value="aa %p %c: %m%n"/>
         </layout>
     </appender>
-    <!-- Корневой logger -->
     <logger name="srez">
         <level value="trace"/>
     </logger>
