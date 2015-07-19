@@ -5,7 +5,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class PartitionEngineSimple implements PartitionEngine {
+public class PartitionEngineLocking implements PartitionEngine {
     @Override
     public <T> Stream<T> exec(Supplier<Stream<Partition>> partitions, Function<Partition, Lock> lockFunction, Function<Partition, T> function) {
         return partitions.get()
