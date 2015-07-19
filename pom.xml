@@ -7,6 +7,8 @@
     <artifactId>temp</artifactId>
     <version>0.0.1</version>
 
+    <properties></properties>
+
     <dependencies>
         <!-- SPRING -->
         <dependency>
