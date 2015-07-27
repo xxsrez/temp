@@ -12,7 +12,8 @@ public class ExpenseConfig {
                 .setConfigClass(ExpenseConfig.class);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         startConfig();
+        Thread.currentThread().join();
     }
 }
