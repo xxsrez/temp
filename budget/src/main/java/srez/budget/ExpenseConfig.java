@@ -10,7 +10,7 @@ public class ExpenseConfig {
     public static ContextTools initConfig() {
         return ContextTools.create()
                 .setConfigClass(ExpenseConfig.class)
-                .addBean("fileName", "/Users/xxsrez/Downloads/rba-statement-20150727.csv");
+                .addBean("fileName", System.getProperty("file"));
     }
 
     public static void main(String[] args) throws InterruptedException {
