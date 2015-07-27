@@ -1,8 +1,8 @@
 package srez.util;
 
-import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 
-public class Pair<K, V> extends AbstractMap.SimpleEntry<K, V> {
+public class Pair<K, V> extends SimpleEntry<K, V> {
     public Pair(K key, V value) {
         super(key, value);
     }

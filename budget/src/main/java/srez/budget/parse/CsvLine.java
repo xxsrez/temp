@@ -3,7 +3,7 @@ package srez.budget.parse;
 import java.time.LocalDate;
 
 public class CsvLine {
-    String[] tokens;
+    final String[] tokens;
 
     public CsvLine(String line) {
         tokens = line.split(";");
