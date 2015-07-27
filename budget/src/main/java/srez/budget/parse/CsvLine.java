@@ -6,7 +6,7 @@ public class CsvLine {
     String[] tokens;
 
     public CsvLine(String line) {
-        this.tokens = line.split(";");
+        tokens = line.split(";");
     }
 
     public String getString(int index) {
