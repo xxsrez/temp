@@ -9,7 +9,8 @@ import srez.context.ContextTools;
 public class ExpenseConfig {
     public static ContextTools initConfig() {
         return ContextTools.create()
-                .setConfigClass(ExpenseConfig.class);
+                .setConfigClass(ExpenseConfig.class)
+                .addBean("fileName", "/Users/xxsrez/Downloads/rba-statement-20150727.csv");
     }
 
     public static void main(String[] args) throws InterruptedException {
