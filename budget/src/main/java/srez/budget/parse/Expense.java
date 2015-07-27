@@ -1,4 +1,4 @@
-package srez.budget.analyze;
+package srez.budget.parse;
 
 import srez.budget.domain.Money;
 
