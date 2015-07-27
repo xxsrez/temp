@@ -7,8 +7,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import static java.nio.file.Files.lines;
 
 @Component
 public class ExpenseLoader {
@@ -20,7 +21,7 @@ public class ExpenseLoader {
     @PostConstruct
     public void load() {
         try {
-            Files.lines(Paths.get(fileName))
+            lines(Paths.get(fileName))
                     .map(CsvLine::new)
                     .map(this::fromCsv)
                     .forEach(System.err::println);
