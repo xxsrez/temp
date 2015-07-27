@@ -1,7 +1,6 @@
 package srez.async;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static srez.util.Delayer.sleep;
@@ -27,7 +26,7 @@ public class Example2 {
         });
     }
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) {
         System.err.println(new Example2().sumTwoOperationsAsync().join());
     }
 }

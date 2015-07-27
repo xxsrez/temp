@@ -13,7 +13,7 @@ public class ExpenseConfig {
                 .addBean("fileName", System.getProperty("file"));
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         initConfig().start();
     }
 }

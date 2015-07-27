@@ -10,7 +10,7 @@ public class CsvLine {
     }
 
     public String getString(int index) {
-        String result = this.tokens[index];
+        String result = tokens[index];
         return unwrap(result);
     }
 
