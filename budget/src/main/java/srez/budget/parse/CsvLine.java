@@ -40,7 +40,7 @@ public class CsvLine {
                 currency = string.substring(spaceIdx + 1);
             }
             Number sum = new DecimalFormat("###,###.##").parse(sumString);
-            return new Money((int) (sum.doubleValue() * 100), null, 0.01);
+            return new Money((int) (sum.doubleValue() * 100), currency, 0.01);
 
         } catch (ParseException e) {
             throw new RuntimeException(e);
