@@ -1,6 +1,6 @@
-package srez.analyze;
+package srez.budget.analyze;
 
-import srez.domain.Money;
+import srez.budget.domain.Money;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,4 @@
-package srez.domain;
+package srez.budget.domain;
 
 public class Money {
     int sum;

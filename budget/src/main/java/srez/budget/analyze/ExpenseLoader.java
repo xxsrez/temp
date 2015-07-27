@@ -1,4 +1,4 @@
-package srez.analyze;
+package srez.budget.analyze;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
