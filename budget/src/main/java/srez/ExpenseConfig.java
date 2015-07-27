@@ -2,10 +2,17 @@ package srez;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import srez.context.ContextTools;
 
 @Configuration
 @ComponentScan("srez")
 public class ExpenseConfig {
-    public static void startConfig() {
+    public static ContextTools startConfig() {
+        return ContextTools.create()
+                .setConfigClass(ExpenseConfig.class);
+    }
+
+    public static void main(String[] args) {
+        startConfig();
     }
 }
