@@ -24,9 +24,34 @@
         <processorPath useClasspath="true" />
         <module name="async" />
       </profile>
+      <profile default="false" name="Annotation profile for budget" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="budget" />
+      </profile>
+      <profile default="false" name="Annotation profile for util" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="util" />
+      </profile>
+      <profile default="false" name="Annotation profile for test-app" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="test-app" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="async" target="1.8" />
+      <module name="budget" target="1.8" />
+      <module name="main" target="1.8" />
+      <module name="test-app" target="1.8" />
+      <module name="util" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
