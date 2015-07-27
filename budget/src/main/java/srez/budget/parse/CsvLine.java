@@ -33,7 +33,7 @@ public class CsvLine {
             if (spaceIdx == -1) {
                 sumString = string;
             } else {
-                sumString = string.substring(spaceIdx);
+                sumString = string.substring(0, spaceIdx);
             }
             Number sum = new DecimalFormat("###,###.##").parse(sumString);
             return new Money((int) (sum.doubleValue() * 100), null, 0.01);
