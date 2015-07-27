@@ -1,5 +1,9 @@
 package srez.budget.parse;
 
+import srez.budget.domain.Money;
+
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -19,6 +23,24 @@ public class CsvLine {
     public LocalDate getDate(int index) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.uuuu");
         return LocalDate.parse(getString(index), dateTimeFormatter);
+    }
+
+    public Money getMoney(int index) {
+        try {
+            String string = getString(index);
+            int spaceIdx = string.indexOf(" ");
+            String sumString;
+            if (spaceIdx == -1) {
+                sumString = string;
+            } else {
+                sumString = string.substring(spaceIdx);
+            }
+            Number sum = new DecimalFormat("###,###.##").parse(sumString);
+            return new Money((int) (sum.doubleValue() * 100), null, 0.01);
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String unwrap(String result) {

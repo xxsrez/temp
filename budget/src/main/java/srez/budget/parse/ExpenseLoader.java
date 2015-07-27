@@ -34,9 +34,9 @@ public class ExpenseLoader {
                 line.getDate(0),
                 line.getDate(1),
                 line.getString(2),
-                null,
-                null,
-                null,
+                line.getMoney(3),
+                line.getMoney(4),
+                line.getMoney(5),
                 line.getString(6)
         );
     }
