@@ -28,12 +28,16 @@ public class CsvLine {
     public Money getMoney(int index) {
         try {
             String string = getString(index);
+            if (string.isEmpty()) return null;
             int spaceIdx = string.indexOf(" ");
             String sumString;
+            String currency;
             if (spaceIdx == -1) {
                 sumString = string;
+                currency = null;
             } else {
                 sumString = string.substring(0, spaceIdx);
+                currency = string.substring(spaceIdx + 1);
             }
             Number sum = new DecimalFormat("###,###.##").parse(sumString);
             return new Money((int) (sum.doubleValue() * 100), null, 0.01);
