@@ -21,9 +21,23 @@ public class ExpenseLoader {
     public void load() {
         try {
             Files.lines(Paths.get(fileName))
+                    .map(CsvLine::new)
+                    .map(this::fromCsv)
                     .forEach(System.err::println);
         } catch (IOException e) {
             log.error("", e);
         }
+    }
+
+    public Expense fromCsv(CsvLine line) {
+        return new Expense(
+                line.getDate(0),
+                line.getDate(1),
+                line.getString(2),
+                null,
+                null,
+                null,
+                line.getString(6)
+        );
     }
 }
