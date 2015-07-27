@@ -5,9 +5,21 @@
     <parent>
         <groupId>srez</groupId>
         <artifactId>root</artifactId>
-        <version>0.0.1</version>
+        <version>${project.version}</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>budget</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>srez</groupId>
+            <artifactId>util</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+        </dependency>
+    </dependencies>
 </project>
