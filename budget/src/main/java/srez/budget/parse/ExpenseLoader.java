@@ -25,14 +25,14 @@ public class ExpenseLoader {
         try {
             expenses = lines(Paths.get(fileName))
                     .map(CsvLine::new)
-                    .map(this::fromCsv)
+                    .map(ExpenseLoader::fromCsv)
                     .toArray(Expense[]::new);
         } catch (IOException e) {
             log.error("", e);
         }
     }
 
-    public Expense fromCsv(CsvLine line) {
+    public static Expense fromCsv(CsvLine line) {
         return new Expense(
                 line.getDate(0),
                 line.getDate(1),

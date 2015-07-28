@@ -47,7 +47,7 @@ public class CsvLine {
         }
     }
 
-    private String unwrap(String result) {
+    private static String unwrap(String result) {
         return result.substring(1, result.length() - 1);
     }
 
