@@ -2,7 +2,7 @@ package srez.budget;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import srez.context.ContextTools;
+import srez.util.context.ContextTools;
 
 @Configuration
 @ComponentScan("srez.budget")

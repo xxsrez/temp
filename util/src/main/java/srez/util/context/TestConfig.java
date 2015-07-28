@@ -1,4 +1,4 @@
-package srez.context;
+package srez.util.context;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = "srez/context")
+@ComponentScan(basePackages = "srez/util/context")
 public class TestConfig {
     @Autowired
     String message;

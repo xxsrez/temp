@@ -1,4 +1,4 @@
-package srez.context;
+package srez.util.context;
 
 import org.springframework.stereotype.Component;
 
