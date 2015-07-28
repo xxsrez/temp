@@ -18,4 +18,11 @@ public class MoreStreamsTest extends TestCase {
             return 0;
         });
     }
+
+    public void testZipDiffSize() throws Exception {
+        assertEquals(100, zip(range(0, 1000).boxed(), range(0, 100).boxed(), (i1, i2) -> {
+            assertEquals(i1, i2);
+            return i1;
+        }).count());
+    }
 }
