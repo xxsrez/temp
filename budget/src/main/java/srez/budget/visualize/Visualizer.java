@@ -1,5 +1,6 @@
 package srez.budget.visualize;
 
+import org.jfree.ui.RefineryUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import srez.budget.parse.ExpenseLoader;
@@ -13,7 +14,10 @@ public class Visualizer {
 
     @PostConstruct
     public void showGraph() throws InterruptedException {
-        new ExpenseGraph(expenseLoader);
+        ExpenseGraph chart = new ExpenseGraph(expenseLoader);
+        chart.pack();
+        RefineryUtilities.centerFrameOnScreen(chart);
+        chart.setVisible(true);
         Thread.currentThread().join();
     }
 }
