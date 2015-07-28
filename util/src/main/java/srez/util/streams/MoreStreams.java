@@ -9,7 +9,9 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+
+import static java.util.Spliterators.spliterator;
+import static java.util.stream.StreamSupport.stream;
 
 public class MoreStreams {
     public static <A, B, C> Stream<C> zip(Stream<? extends A> a,
@@ -42,8 +44,8 @@ public class MoreStreams {
             }
         };
 
-        Spliterator<C> split = Spliterators.spliterator(cIterator, zipSize, characteristics);
-        return StreamSupport.stream(split, a.isParallel() || b.isParallel());
+        Spliterator<C> split = spliterator(cIterator, zipSize, characteristics);
+        return stream(split, a.isParallel() || b.isParallel());
     }
 
     //TODO
@@ -59,9 +61,12 @@ public class MoreStreams {
 
     public static <T, A> Stream<A> mapAggregated(Stream<T> stream, BiFunction<T, A, A> mappingFunction) {
         Spliterator<T> spliterator = stream.spliterator();
-        AggregatedIterator<T, A> iterator = new AggregatedIterator<>(spliterator, mappingFunction);
-        int characteristics = 0;
-        Spliterator<A> spliteratorNew = Spliterators.spliterator(iterator, spliterator.estimateSize(), characteristics);
-        return StreamSupport.stream(spliteratorNew, false);
+        Iterator<T> iterator = Spliterators.iterator(spliterator);
+        AggregatedIterator<T, A> iteratorNew = new AggregatedIterator<>(iterator, mappingFunction);
+        int characteristics = spliterator.characteristics()
+                & ~(Spliterator.DISTINCT | Spliterator.SORTED | Spliterator.IMMUTABLE)
+                & Spliterator.CONCURRENT;
+        Spliterator<A> spliteratorNew = spliterator(iteratorNew, spliterator.estimateSize(), characteristics);
+        return stream(spliteratorNew, false);
     }
 }

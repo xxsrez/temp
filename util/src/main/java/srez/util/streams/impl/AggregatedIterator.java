@@ -1,12 +1,15 @@
 package srez.util.streams.impl;
 
 import java.util.Iterator;
-import java.util.Spliterator;
 import java.util.function.BiFunction;
 
 public class AggregatedIterator<T, A> implements Iterator<A> {
-    public AggregatedIterator(Spliterator<T> stream, BiFunction<T, A, A> mappingFunction) {
+    private final Iterator<T> spliterator;
+    private final BiFunction<T, A, A> mappingFunction;
 
+    public AggregatedIterator(Iterator<T> spliterator, BiFunction<T, A, A> mappingFunction) {
+        this.spliterator = spliterator;
+        this.mappingFunction = mappingFunction;
     }
 
     @Override
