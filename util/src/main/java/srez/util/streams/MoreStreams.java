@@ -92,7 +92,7 @@ public class MoreStreams {
     public static <T, A> Stream<A> mapAggregated(Stream<T> stream, Supplier<A> accumulatorSupplier, BiFunction<T, A, A> mappingFunction) {
         Spliterator<T> spliterator = stream.spliterator();
         Iterator<T> iterator = iterator(spliterator);
-        AggregatedIterator<T, A> iteratorNew = new AggregatedIterator<>(iterator, mappingFunction);
+        AggregatedIterator<T, A> iteratorNew = new AggregatedIterator<>(iterator, accumulatorSupplier, mappingFunction);
         int characteristics = spliterator.characteristics()
                 & ~(Spliterator.DISTINCT | Spliterator.SORTED | Spliterator.IMMUTABLE)
                 & Spliterator.CONCURRENT;
