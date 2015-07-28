@@ -3,8 +3,8 @@ package srez.util.streams;
 import junit.framework.TestCase;
 
 import static java.util.stream.IntStream.range;
-import static srez.util.streams.MoreStreams.withIndex;
-import static srez.util.streams.MoreStreams.zip;
+import static java.util.stream.Stream.iterate;
+import static srez.util.streams.MoreStreams.*;
 
 public class MoreStreamsTest extends TestCase {
     public void testWithIndex() throws Exception {
@@ -24,5 +24,10 @@ public class MoreStreamsTest extends TestCase {
             assertEquals(i1, i2);
             return i1;
         }).count());
+    }
+
+    public void testTakeWhile() throws Exception {
+        assertEquals(13, takeWhile(mapAggregated(iterate(0, i -> i + 1), (Integer i, Integer a) -> i + a), i -> i < 100)
+                .count());
     }
 }

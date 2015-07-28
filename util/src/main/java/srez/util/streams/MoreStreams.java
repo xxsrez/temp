@@ -17,6 +17,10 @@ import static java.util.Spliterators.spliterator;
 import static java.util.stream.StreamSupport.stream;
 
 public class MoreStreams {
+    public static <T> MoreStream<T> more(Stream<T> stream) {
+        return new MoreStream<>(stream);
+    }
+
     public static <T1, T2> Stream<Pair<T1, T2>> zip(Stream<? extends T1> stream1, Stream<? extends T2> stream2) {
         return zip(stream1, stream2, Pair::new);
     }
@@ -61,8 +65,9 @@ public class MoreStreams {
     }
 
     //TODO
-    public static <T> Spliterator<T> takeWhile(Spliterator<T> spliterator, Predicate<? super T> predicate) {
-        return new AbstractSpliterator<T>(spliterator.estimateSize(), 0) {
+    public static <T> Stream<T> takeWhile(Stream<T> stream, Predicate<? super T> predicate) {
+        Spliterator<T> spliterator = stream.spliterator();
+        AbstractSpliterator<T> spliteratorNew = new AbstractSpliterator<T>(spliterator.estimateSize(), 0) {
             boolean stillGoing = true;
 
             @Override
@@ -80,6 +85,7 @@ public class MoreStreams {
                 return false;
             }
         };
+        return stream(spliteratorNew, stream.isParallel());
     }
 
     public static <T, A> Stream<A> mapAggregated(Stream<T> stream, BiFunction<T, A, A> mappingFunction) {
