@@ -27,7 +27,9 @@ public class MoreStreamsTest extends TestCase {
     }
 
     public void testTakeWhile() throws Exception {
-        assertEquals(13, takeWhile(mapAggregated(iterate(0, i -> i + 1), (Integer i, Integer a) -> i + a), i -> i < 100)
+        assertEquals(13, more(more(iterate(0, i -> i + 1))
+                .mapAggregated((Integer i, Integer a) -> i + a))
+                .takeWhile(i -> i < 100)
                 .count());
     }
 }
