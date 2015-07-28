@@ -7,7 +7,10 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import java.util.Spliterators.AbstractSpliterator;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static java.util.Spliterators.spliterator;
@@ -54,9 +57,25 @@ public class MoreStreams {
     }
 
     //TODO
-    public static <T> Stream<T> takeWhile(Stream<T> stream) {
-        return null;
+    public static <T> Spliterator<T> takeWhile(Spliterator<T> spliterator, Predicate<? super T> predicate) {
+        return new AbstractSpliterator<T>(spliterator.estimateSize(), 0) {
+            boolean stillGoing = true;
 
+            @Override
+            public boolean tryAdvance(Consumer<? super T> consumer) {
+                if (stillGoing) {
+                    boolean hadNext = spliterator.tryAdvance(elem -> {
+                        if (predicate.test(elem)) {
+                            consumer.accept(elem);
+                        } else {
+                            stillGoing = false;
+                        }
+                    });
+                    return hadNext && stillGoing;
+                }
+                return false;
+            }
+        };
     }
 
     public static <T, A> Stream<A> mapAggregated(Stream<T> stream, BiFunction<T, A, A> mappingFunction) {
