@@ -5,6 +5,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
@@ -47,7 +48,8 @@ public class ExpenseGraph extends ApplicationFrame {
         Stream.of(expenseLoader.getExpenses())
                 .collect(groupingBy(e -> e.getPostingDate().toEpochDay(), summingDouble(k -> k.getMoney().getMoney())))
                 .entrySet().stream()
-                .forEach(e -> series.add(e.getKey().doubleValue(), e.getValue()));
+                .map(e -> new XYDataItem(e.getKey().doubleValue(), e.getValue().doubleValue()))
+                .forEach(series::add);
         return new XYSeriesCollection(series);
     }
 }
