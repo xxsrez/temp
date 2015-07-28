@@ -17,14 +17,18 @@ import static java.util.Spliterators.spliterator;
 import static java.util.stream.StreamSupport.stream;
 
 public class MoreStreams {
-    public static <A, B, C> Stream<C> zip(Stream<? extends A> a,
-                                          Stream<? extends B> b,
-                                          BiFunction<? super A, ? super B, ? extends C> zipper) {
+    public static <T1, T2> Stream<Pair<T1, T2>> zip(Stream<? extends T1> stream1, Stream<? extends T2> stream2) {
+        return zip(stream1, stream2, Pair::new);
+    }
+
+    public static <T1, T2, Z> Stream<Z> zip(Stream<? extends T1> a,
+                                            Stream<? extends T2> b,
+                                            BiFunction<? super T1, ? super T2, ? extends Z> zipper) {
         Objects.requireNonNull(zipper);
         @SuppressWarnings("unchecked")
-        Spliterator<A> aSpliterator = (Spliterator<A>) Objects.requireNonNull(a).spliterator();
+        Spliterator<T1> aSpliterator = (Spliterator<T1>) Objects.requireNonNull(a).spliterator();
         @SuppressWarnings("unchecked")
-        Spliterator<B> bSpliterator = (Spliterator<B>) Objects.requireNonNull(b).spliterator();
+        Spliterator<T2> bSpliterator = (Spliterator<T2>) Objects.requireNonNull(b).spliterator();
 
         int characteristics = aSpliterator.characteristics() & bSpliterator.characteristics() &
                 ~(Spliterator.DISTINCT | Spliterator.SORTED);
@@ -33,21 +37,21 @@ public class MoreStreams {
                 ? Math.min(aSpliterator.getExactSizeIfKnown(), bSpliterator.getExactSizeIfKnown())
                 : -1;
 
-        Iterator<A> aIterator = Spliterators.iterator(aSpliterator);
-        Iterator<B> bIterator = Spliterators.iterator(bSpliterator);
-        Iterator<C> cIterator = new Iterator<C>() {
+        Iterator<T1> aIterator = Spliterators.iterator(aSpliterator);
+        Iterator<T2> bIterator = Spliterators.iterator(bSpliterator);
+        Iterator<Z> cIterator = new Iterator<Z>() {
             @Override
             public boolean hasNext() {
                 return aIterator.hasNext() && bIterator.hasNext();
             }
 
             @Override
-            public C next() {
+            public Z next() {
                 return zipper.apply(aIterator.next(), bIterator.next());
             }
         };
 
-        Spliterator<C> split = spliterator(cIterator, zipSize, characteristics);
+        Spliterator<Z> split = spliterator(cIterator, zipSize, characteristics);
         return stream(split, a.isParallel() || b.isParallel());
     }
 
