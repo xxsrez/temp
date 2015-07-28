@@ -4,21 +4,23 @@ import java.util.Iterator;
 import java.util.function.BiFunction;
 
 public class AggregatedIterator<T, A> implements Iterator<A> {
-    private final Iterator<T> spliterator;
+    private A aggregator;
+
+    private final Iterator<T> iterator;
     private final BiFunction<T, A, A> mappingFunction;
 
-    public AggregatedIterator(Iterator<T> spliterator, BiFunction<T, A, A> mappingFunction) {
-        this.spliterator = spliterator;
+    public AggregatedIterator(Iterator<T> iterator, BiFunction<T, A, A> mappingFunction) {
+        this.iterator = iterator;
         this.mappingFunction = mappingFunction;
     }
 
     @Override
     public boolean hasNext() {
-        return false;
+        return iterator.hasNext();
     }
 
     @Override
     public A next() {
-        return null;
+        return aggregator = mappingFunction.apply(iterator.next(), aggregator);
     }
 }
