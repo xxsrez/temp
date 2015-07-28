@@ -21,14 +21,14 @@ public class MoreStreams {
         return zip(stream1, stream2, Pair::new);
     }
 
-    public static <T1, T2, Z> Stream<Z> zip(Stream<? extends T1> a,
-                                            Stream<? extends T2> b,
+    public static <T1, T2, Z> Stream<Z> zip(Stream<? extends T1> stream1,
+                                            Stream<? extends T2> stream2,
                                             BiFunction<? super T1, ? super T2, ? extends Z> zipper) {
         Objects.requireNonNull(zipper);
         @SuppressWarnings("unchecked")
-        Spliterator<T1> aSpliterator = (Spliterator<T1>) Objects.requireNonNull(a).spliterator();
+        Spliterator<T1> aSpliterator = (Spliterator<T1>) Objects.requireNonNull(stream1).spliterator();
         @SuppressWarnings("unchecked")
-        Spliterator<T2> bSpliterator = (Spliterator<T2>) Objects.requireNonNull(b).spliterator();
+        Spliterator<T2> bSpliterator = (Spliterator<T2>) Objects.requireNonNull(stream2).spliterator();
 
         int characteristics = aSpliterator.characteristics() & bSpliterator.characteristics() &
                 ~(Spliterator.DISTINCT | Spliterator.SORTED);
@@ -52,7 +52,7 @@ public class MoreStreams {
         };
 
         Spliterator<Z> split = spliterator(cIterator, zipSize, characteristics);
-        return stream(split, a.isParallel() || b.isParallel());
+        return stream(split, stream1.isParallel() || stream2.isParallel());
     }
 
     //TODO
