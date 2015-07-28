@@ -13,6 +13,8 @@ import srez.budget.parse.ExpenseLoader;
 import java.awt.*;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingDouble;
 import static org.jfree.chart.ChartFactory.createXYLineChart;
 
 public class ExpenseGraph extends ApplicationFrame {
@@ -38,9 +40,9 @@ public class ExpenseGraph extends ApplicationFrame {
 
     public JFreeChart chart() {
         return createXYLineChart(
-                "chartTitle",
-                "Category",
-                "Score",
+                "Expenses chart",
+                "Day",
+                "Expenses",
                 dataset(),
                 PlotOrientation.VERTICAL,
                 true, true, false);
@@ -49,9 +51,9 @@ public class ExpenseGraph extends ApplicationFrame {
     public XYSeriesCollection dataset() {
         XYSeries series = new XYSeries("expenses");
         Stream.of(expenseLoader.getExpenses())
-                .filter(e -> e.getPostingDate() != null)
-                .filter(e -> e.getMoney() != null)
-                .forEach(e -> series.add(e.getPostingDate().toEpochDay(), e.getMoney().getSum() * e.getMoney().getMultiplicator()));
+                .collect(groupingBy(e -> e.getPostingDate().toEpochDay(), summingDouble(k -> k.getMoney().getMoney())))
+                .entrySet().stream()
+                .forEach(e -> series.add(e.getKey().doubleValue(), e.getValue()));
         return new XYSeriesCollection(series);
     }
 }

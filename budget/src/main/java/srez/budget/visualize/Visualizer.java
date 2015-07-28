@@ -18,6 +18,5 @@ public class Visualizer {
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);
         chart.setVisible(true);
-        Thread.currentThread().join();
     }
 }

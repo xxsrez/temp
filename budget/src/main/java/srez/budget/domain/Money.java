@@ -13,6 +13,10 @@ public class Money {
         this.multiplicator = multiplicator;
     }
 
+    public double getMoney() {
+        return sum * multiplicator;
+    }
+
     public int getSum() {
         return sum;
     }
