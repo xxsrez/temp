@@ -6,13 +6,13 @@ import srez.budget.domain.Money;
 import java.time.LocalDate;
 
 public class Expense {
-    LocalDate transactionDate;
-    LocalDate postingDate;
-    String description;
-    Money money;
-    Money credit;
-    Money debit;
-    String detailedInformation;
+    private final LocalDate transactionDate;
+    private final LocalDate postingDate;
+    private final String description;
+    private final Money money;
+    private final Money credit;
+    private final Money debit;
+    private final String detailedInformation;
 
     public Expense(LocalDate transactionDate, LocalDate postingDate, String description, Money money, Money credit, Money debit, String detailedInformation) {
         this.transactionDate = transactionDate;

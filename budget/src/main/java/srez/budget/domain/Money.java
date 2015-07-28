@@ -3,9 +3,9 @@ package srez.budget.domain;
 import com.google.common.base.MoreObjects;
 
 public class Money {
-    int sum;
-    String currency;
-    double multiplicator;
+    private final int sum;
+    private final String currency;
+    private final double multiplicator;
 
     public Money(int sum, String currency, double multiplicator) {
         this.sum = sum;
