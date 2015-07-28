@@ -1,6 +1,7 @@
 package srez.util.streams;
 
 import srez.util.Pair;
+import srez.util.streams.impl.AggregatedIterator;
 
 import java.util.Iterator;
 import java.util.Objects;
@@ -56,8 +57,11 @@ public class MoreStreams {
 
     }
 
-    //TODO
     public static <T, A> Stream<A> mapAggregated(Stream<T> stream, BiFunction<T, A, A> mappingFunction) {
-        return null;
+        Spliterator<T> spliterator = stream.spliterator();
+        AggregatedIterator<T, A> iterator = new AggregatedIterator<>(spliterator, mappingFunction);
+        int characteristics = 0;
+        Spliterator<A> spliteratorNew = Spliterators.spliterator(iterator, spliterator.estimateSize(), characteristics);
+        return StreamSupport.stream(spliteratorNew, false);
     }
 }
