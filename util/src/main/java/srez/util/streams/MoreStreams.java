@@ -45,16 +45,16 @@ public class MoreStreams {
         return StreamSupport.stream(split, a.isParallel() || b.isParallel());
     }
 
-    public <T> Stream<Pair<Integer, T>> withIndex(Stream<T> stream) {
+    public static <T> Stream<Pair<Integer, T>> withIndex(Stream<T> stream) {
         return null;
     }
 
-    public <T> Stream<T> takeWhile(Stream<T> stream) {
+    public static <T> Stream<T> takeWhile(Stream<T> stream) {
         return null;
 
     }
 
-    public <T, A> Stream<A> mapAggregated(Stream<T> stream, BiFunction<T, A, A> mappingFunction) {
+    public static <T, A> Stream<A> mapAggregated(Stream<T> stream, BiFunction<T, A, A> mappingFunction) {
         return null;
     }
 }
