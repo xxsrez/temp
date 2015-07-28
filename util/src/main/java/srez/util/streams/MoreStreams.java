@@ -10,6 +10,7 @@ import java.util.Spliterators.AbstractSpliterator;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static java.util.Spliterators.iterator;
@@ -88,7 +89,7 @@ public class MoreStreams {
         return stream(spliteratorNew, stream.isParallel());
     }
 
-    public static <T, A> Stream<A> mapAggregated(Stream<T> stream, BiFunction<T, A, A> mappingFunction) {
+    public static <T, A> Stream<A> mapAggregated(Stream<T> stream, Supplier<A> accumulatorSupplier, BiFunction<T, A, A> mappingFunction) {
         Spliterator<T> spliterator = stream.spliterator();
         Iterator<T> iterator = iterator(spliterator);
         AggregatedIterator<T, A> iteratorNew = new AggregatedIterator<>(iterator, mappingFunction);

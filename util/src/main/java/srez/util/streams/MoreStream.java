@@ -4,6 +4,7 @@ import srez.util.Pair;
 
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class MoreStream<T> {
@@ -29,7 +30,7 @@ public class MoreStream<T> {
         return MoreStreams.takeWhile(stream, predicate);
     }
 
-    public <A> Stream<A> mapAggregated(BiFunction<T, A, A> mappingFunction) {
-        return MoreStreams.mapAggregated(stream, mappingFunction);
+    public <A> Stream<A> mapAggregated(Supplier<A> accumulatorSupplier, BiFunction<T, A, A> mappingFunction) {
+        return MoreStreams.mapAggregated(stream, accumulatorSupplier, mappingFunction);
     }
 }
