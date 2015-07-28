@@ -6,13 +6,13 @@ import srez.util.streams.impl.AggregatedIterator;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.Spliterators.AbstractSpliterator;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static java.util.Spliterators.iterator;
 import static java.util.Spliterators.spliterator;
 import static java.util.stream.StreamSupport.stream;
 
@@ -26,32 +26,32 @@ public class MoreStreams {
                                             BiFunction<? super T1, ? super T2, ? extends Z> zipper) {
         Objects.requireNonNull(zipper);
         @SuppressWarnings("unchecked")
-        Spliterator<T1> aSpliterator = (Spliterator<T1>) Objects.requireNonNull(stream1).spliterator();
+        Spliterator<T1> spliterator1 = (Spliterator<T1>) Objects.requireNonNull(stream1).spliterator();
         @SuppressWarnings("unchecked")
-        Spliterator<T2> bSpliterator = (Spliterator<T2>) Objects.requireNonNull(stream2).spliterator();
+        Spliterator<T2> spliterator2 = (Spliterator<T2>) Objects.requireNonNull(stream2).spliterator();
 
-        int characteristics = aSpliterator.characteristics() & bSpliterator.characteristics() &
+        int characteristics = spliterator1.characteristics() & spliterator2.characteristics() &
                 ~(Spliterator.DISTINCT | Spliterator.SORTED);
 
         long zipSize = (characteristics & Spliterator.SIZED) != 0
-                ? Math.min(aSpliterator.getExactSizeIfKnown(), bSpliterator.getExactSizeIfKnown())
+                ? Math.min(spliterator1.getExactSizeIfKnown(), spliterator2.getExactSizeIfKnown())
                 : -1;
 
-        Iterator<T1> aIterator = Spliterators.iterator(aSpliterator);
-        Iterator<T2> bIterator = Spliterators.iterator(bSpliterator);
-        Iterator<Z> cIterator = new Iterator<Z>() {
+        Iterator<T1> iterator1 = iterator(spliterator1);
+        Iterator<T2> iterator2 = iterator(spliterator2);
+        Iterator<Z> iterator = new Iterator<Z>() {
             @Override
             public boolean hasNext() {
-                return aIterator.hasNext() && bIterator.hasNext();
+                return iterator1.hasNext() && iterator2.hasNext();
             }
 
             @Override
             public Z next() {
-                return zipper.apply(aIterator.next(), bIterator.next());
+                return zipper.apply(iterator1.next(), iterator2.next());
             }
         };
 
-        Spliterator<Z> split = spliterator(cIterator, zipSize, characteristics);
+        Spliterator<Z> split = spliterator(iterator, zipSize, characteristics);
         return stream(split, stream1.isParallel() || stream2.isParallel());
     }
 
@@ -84,7 +84,7 @@ public class MoreStreams {
 
     public static <T, A> Stream<A> mapAggregated(Stream<T> stream, BiFunction<T, A, A> mappingFunction) {
         Spliterator<T> spliterator = stream.spliterator();
-        Iterator<T> iterator = Spliterators.iterator(spliterator);
+        Iterator<T> iterator = iterator(spliterator);
         AggregatedIterator<T, A> iteratorNew = new AggregatedIterator<>(iterator, mappingFunction);
         int characteristics = spliterator.characteristics()
                 & ~(Spliterator.DISTINCT | Spliterator.SORTED | Spliterator.IMMUTABLE)
