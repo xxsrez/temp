@@ -24,6 +24,34 @@ public class Expense {
         this.detailedInformation = detailedInformation;
     }
 
+    public LocalDate getTransactionDate() {
+        return transactionDate;
+    }
+
+    public LocalDate getPostingDate() {
+        return postingDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Money getMoney() {
+        return money;
+    }
+
+    public Money getCredit() {
+        return credit;
+    }
+
+    public Money getDebit() {
+        return debit;
+    }
+
+    public String getDetailedInformation() {
+        return detailedInformation;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)

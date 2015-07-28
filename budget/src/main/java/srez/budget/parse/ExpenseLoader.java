@@ -15,16 +15,18 @@ import static java.nio.file.Files.lines;
 public class ExpenseLoader {
     private static final Logger log = LoggerFactory.getLogger(ExpenseLoader.class);
 
+    private Expense[] expenses;
+
     @Autowired
     String fileName;
 
     @PostConstruct
     public void load() {
         try {
-            lines(Paths.get(fileName))
+            expenses = lines(Paths.get(fileName))
                     .map(CsvLine::new)
                     .map(this::fromCsv)
-                    .forEach(System.err::println);
+                    .toArray(Expense[]::new);
         } catch (IOException e) {
             log.error("", e);
         }
@@ -40,5 +42,9 @@ public class ExpenseLoader {
                 line.getMoney(5),
                 line.getString(6)
         );
+    }
+
+    public Expense[] getExpenses() {
+        return expenses;
     }
 }

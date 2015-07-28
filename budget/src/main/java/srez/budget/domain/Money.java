@@ -13,6 +13,18 @@ public class Money {
         this.multiplicator = multiplicator;
     }
 
+    public int getSum() {
+        return sum;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public double getMultiplicator() {
+        return multiplicator;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
