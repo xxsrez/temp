@@ -12,5 +12,4 @@ public class ExpenseFrame extends ApplicationFrame {
         chartPanel.setPreferredSize(new Dimension(800, 600));
         setContentPane(chartPanel);
     }
-
 }

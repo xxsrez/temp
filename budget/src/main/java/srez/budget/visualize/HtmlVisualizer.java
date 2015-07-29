@@ -1,5 +1,6 @@
 package srez.budget.visualize;
 
+import org.jfree.chart.ChartUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -18,13 +19,23 @@ public class HtmlVisualizer {
     @Autowired
     ExpenseLoader expenseLoader;
     @Autowired
+    ExpenseGraph expenseGraph;
+    @Autowired
     ExpenseProperties expenseProperties;
 
     @PostConstruct
     public void buildReport() {
-        File reportRoot = new File(expenseProperties.getHtmlLogPath());
-        reportRoot.getParentFile().mkdirs();
-        buildReportRoot(reportRoot);
+        try {
+            File reportRoot = new File(expenseProperties.getHtmlLogPath());
+            File reportDir = reportRoot.getParentFile();
+            reportDir.mkdirs();
+
+            ChartUtilities.saveChartAsPNG(new File(reportDir, "graph.png"), expenseGraph.chart(), 800, 600);
+            buildReportRoot(reportRoot);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void buildReportRoot(File rootFile) {
