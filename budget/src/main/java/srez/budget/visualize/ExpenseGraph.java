@@ -9,7 +9,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import srez.budget.parse.ExpenseLoader;
+import srez.budget.analyze.Analyzer;
 
 import java.util.stream.Stream;
 
@@ -20,7 +20,7 @@ import static org.jfree.chart.ChartFactory.createXYLineChart;
 @Component
 public class ExpenseGraph {
     @Autowired
-    ExpenseLoader expenseLoader;
+    Analyzer analyzer;
 
     public JFreeChart chart() {
         JFreeChart chart = createXYLineChart(
@@ -38,7 +38,7 @@ public class ExpenseGraph {
 
     public XYSeriesCollection dataset() {
         XYSeries series = new XYSeries("expenses");
-        Stream.of(expenseLoader.getExpenses())
+        Stream.of(analyzer.getExpenses())
                 .collect(groupingBy(e -> e.getPostingDate().toEpochDay(), summingDouble(k -> k.getMoney().getMoney())))
                 .entrySet().stream()
                 .map(e -> new XYDataItem(e.getKey().doubleValue(), e.getValue().doubleValue()))

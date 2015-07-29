@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import srez.budget.domain.ExpenseProperties;
 import srez.budget.parse.ExpenseLoader;
 import srez.util.html.HtmlDocument;
+import srez.util.html.HtmlImage;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
@@ -44,6 +45,7 @@ public class HtmlVisualizer {
     public void buildReportRoot(File rootFile) {
         try {
             HtmlDocument htmlDocument = new HtmlDocument();
+            htmlDocument.append(new HtmlImage("graph.png"));
             htmlDocument.append(of(expenseLoader.getExpenses())
                     .map(String::valueOf)
                     .collect(joining("\n", "<pre>", "</pre>")));

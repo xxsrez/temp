@@ -6,6 +6,10 @@ public class HtmlDocument {
 
     private final StringBuilder inner = new StringBuilder();
 
+    public void append(HtmlObject htmlObject) {
+        append(htmlObject.build());
+    }
+
     public void append(String string) {
         inner.append(string);
     }
