@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import srez.budget.domain.ExpenseProperties;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -18,12 +19,12 @@ public class ExpenseLoader {
     private Expense[] expenses;
 
     @Autowired
-    String fileName;
+    ExpenseProperties expenseProperties;
 
     @PostConstruct
     public void load() {
         try {
-            expenses = lines(Paths.get(fileName))
+            expenses = lines(Paths.get(expenseProperties.getCsvFileName()))
                     .map(CsvLine::new)
                     .map(ExpenseLoader::fromCsv)
                     .toArray(Expense[]::new);

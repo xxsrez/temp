@@ -9,8 +9,7 @@ import srez.util.context.ContextTools;
 public class ExpenseConfig {
     public static ContextTools initConfig() {
         return ContextTools.create()
-                .setConfigClass(ExpenseConfig.class)
-                .addBean("fileName", System.getProperty("file"));
+                .setConfigClass(ExpenseConfig.class);
     }
 
     public static void main(String[] args) {
