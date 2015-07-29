@@ -9,11 +9,11 @@ import srez.budget.domain.ExpenseProperties;
 import srez.budget.parse.ExpenseLoader;
 import srez.util.html.HtmlDocument;
 import srez.util.html.HtmlImage;
+import srez.util.html.HtmlTable;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
 
-import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.of;
 
 @Component
@@ -44,11 +44,13 @@ public class HtmlVisualizer {
 
     public void buildReportRoot(File rootFile) {
         try {
+            HtmlTable expenseTable = new HtmlTable("TransactionDate", "PostingDate", "Description", "Money");
+            of(expenseLoader.getExpenses())
+                    .forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney()));
+
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.append(new HtmlImage("graph.png"));
-            htmlDocument.append(of(expenseLoader.getExpenses())
-                    .map(String::valueOf)
-                    .collect(joining("\n", "<pre>", "</pre>")));
+            htmlDocument.append(expenseTable);
             try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(rootFile)))) {
                 out.print(htmlDocument);
             }
