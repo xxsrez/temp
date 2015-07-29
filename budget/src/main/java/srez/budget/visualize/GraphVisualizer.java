@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 
 @Component
 @Profile("graph")
-public class Visualizer {
+public class GraphVisualizer {
     @Autowired
     ExpenseGraph expenseGraph;
 
