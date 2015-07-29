@@ -4,7 +4,6 @@ import org.jfree.ui.RefineryUtilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import srez.budget.parse.ExpenseLoader;
 
 import javax.annotation.PostConstruct;
 
@@ -12,11 +11,11 @@ import javax.annotation.PostConstruct;
 @Profile("graph")
 public class Visualizer {
     @Autowired
-    ExpenseLoader expenseLoader;
+    ExpenseGraph expenseGraph;
 
     @PostConstruct
     public void showGraph() throws InterruptedException {
-        ExpenseGraph chart = new ExpenseGraph(expenseLoader);
+        ExpenseFrame chart = new ExpenseFrame(expenseGraph);
         chart.pack();
         RefineryUtilities.centerFrameOnScreen(chart);
         chart.setVisible(true);

@@ -1,6 +1,5 @@
 package srez.budget.visualize;
 
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
@@ -8,26 +7,20 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.ApplicationFrame;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import srez.budget.parse.ExpenseLoader;
 
-import java.awt.*;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingDouble;
 import static org.jfree.chart.ChartFactory.createXYLineChart;
 
-public class ExpenseGraph extends ApplicationFrame {
-    private final ExpenseLoader expenseLoader;
-
-    public ExpenseGraph(ExpenseLoader expenseLoader) {
-        super("title");
-        this.expenseLoader = expenseLoader;
-        ChartPanel chartPanel = new ChartPanel(chart());
-        chartPanel.setPreferredSize(new Dimension(800, 600));
-        setContentPane(chartPanel);
-    }
+@Component
+public class ExpenseGraph {
+    @Autowired
+    ExpenseLoader expenseLoader;
 
     public JFreeChart chart() {
         JFreeChart chart = createXYLineChart(
@@ -52,4 +45,5 @@ public class ExpenseGraph extends ApplicationFrame {
                 .forEach(series::add);
         return new XYSeriesCollection(series);
     }
+
 }
