@@ -25,7 +25,6 @@ public class HtmlVisualizer {
         File reportRoot = new File(expenseProperties.getHtmlLogPath());
         reportRoot.getParentFile().mkdirs();
         buildReportRoot(reportRoot);
-
     }
 
     public void buildReportRoot(File rootFile) {

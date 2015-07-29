@@ -24,23 +24,23 @@ public class ExpenseGraph extends ApplicationFrame {
     public ExpenseGraph(ExpenseLoader expenseLoader) {
         super("title");
         this.expenseLoader = expenseLoader;
-        JFreeChart chart = chart();
-        ChartPanel chartPanel = new ChartPanel(chart);
+        ChartPanel chartPanel = new ChartPanel(chart());
         chartPanel.setPreferredSize(new Dimension(800, 600));
-        XYPlot plot = chart.getXYPlot();
-        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-        plot.setRenderer(renderer);
         setContentPane(chartPanel);
     }
 
     public JFreeChart chart() {
-        return createXYLineChart(
+        JFreeChart chart = createXYLineChart(
                 "Expenses chart",
                 "Day",
                 "Expenses",
                 dataset(),
                 PlotOrientation.VERTICAL,
                 true, true, false);
+        XYPlot plot = chart.getXYPlot();
+        XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        plot.setRenderer(renderer);
+        return chart;
     }
 
     public XYSeriesCollection dataset() {
