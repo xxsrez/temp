@@ -18,7 +18,7 @@ import static java.util.stream.Stream.of;
 @Component
 public class Analyzer {
     private Expense[] expenses;
-    private List<List<Expense>> groupped;
+    private List<List<Expense>> grouped;
 
     @Autowired
     ExpenseLoader expenseLoader;
@@ -34,7 +34,7 @@ public class Analyzer {
         LongSummaryStatistics statistics = byDate.keySet().stream()
                 .mapToLong(i -> i)
                 .summaryStatistics();
-        groupped = range(0, (int) (statistics.getMax() - statistics.getMin() + 1))
+        grouped = range(0, (int) (statistics.getMax() - statistics.getMin() + 1))
                 .mapToObj(i -> byDate.get(i + statistics.getMin()))
                 .collect(toList());
     }
@@ -43,7 +43,7 @@ public class Analyzer {
         return expenses;
     }
 
-    public List<List<Expense>> getGroupped() {
-        return groupped;
+    public List<List<Expense>> getGrouped() {
+        return grouped;
     }
 }
