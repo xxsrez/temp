@@ -35,7 +35,7 @@ public class Analyzer {
                 .mapToLong(i -> i)
                 .summaryStatistics();
         groupped = range(0, (int) (statistics.getMax() - statistics.getMin() + 1))
-                .mapToObj(byDate::get)
+                .mapToObj(i -> byDate.get(i + statistics.getMin()))
                 .collect(toList());
     }
 
