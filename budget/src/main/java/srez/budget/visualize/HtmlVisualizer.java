@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import srez.budget.domain.ExpenseProperties;
 import srez.budget.parse.ExpenseLoader;
+import srez.util.html.HtmlDocument;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
@@ -42,12 +43,12 @@ public class HtmlVisualizer {
 
     public void buildReportRoot(File rootFile) {
         try {
+            HtmlDocument htmlDocument = new HtmlDocument();
+            htmlDocument.append(of(expenseLoader.getExpenses())
+                    .map(String::valueOf)
+                    .collect(joining("\n", "<pre>", "</pre>")));
             try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(rootFile)))) {
-                out.print("<html><body>");
-                out.print(of(expenseLoader.getExpenses())
-                        .map(String::valueOf)
-                        .collect(joining("\n", "<pre>", "</pre>")));
-                out.print("</body></html>");
+                out.print(htmlDocument);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
