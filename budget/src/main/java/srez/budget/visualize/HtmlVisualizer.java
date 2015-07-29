@@ -1,6 +1,7 @@
 package srez.budget.visualize;
 
 import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -30,7 +31,8 @@ public class HtmlVisualizer {
             File reportDir = reportRoot.getParentFile();
             reportDir.mkdirs();
 
-            ChartUtilities.saveChartAsPNG(new File(reportDir, "graph.png"), expenseGraph.chart(), 800, 600);
+            JFreeChart chart = expenseGraph.chart();
+            ChartUtilities.saveChartAsPNG(new File(reportDir, "graph.png"), chart, 800, 600);
             buildReportRoot(reportRoot);
 
         } catch (IOException e) {
