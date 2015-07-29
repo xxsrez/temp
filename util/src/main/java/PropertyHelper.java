@@ -12,7 +12,9 @@ public class PropertyHelper {
             Properties properties = new Properties();
             properties.load(PropertyHelper.class.getClassLoader().getResourceAsStream(propertyName));
             return properties.entrySet().stream()
-                    .map(e -> new Pair<>(e.getKey() + "", e.getValue() + ""))
+                    .map(Pair::new)
+                    .map(p -> p.map(String::valueOf, String::valueOf))
+                    .map(p -> p.map(v -> System.getProperty(p.getKey(), v)))
                     .collect(toMapCollector());
         } catch (IOException e) {
             throw new RuntimeException(e);
