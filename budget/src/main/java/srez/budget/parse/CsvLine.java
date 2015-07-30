@@ -3,9 +3,11 @@ package srez.budget.parse;
 import srez.budget.domain.Money;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class CsvLine {
     final String[] tokens;
@@ -39,7 +41,13 @@ public class CsvLine {
                 sumString = string.substring(0, spaceIdx);
                 currency = string.substring(spaceIdx + 1);
             }
-            Number sum = new DecimalFormat("###,###.##").parse(sumString);
+            Locale currentLocale = new Locale("en", "US");
+
+            DecimalFormatSymbols unusualSymbols =
+                    new DecimalFormatSymbols(currentLocale);
+//            unusualSymbols.setDecimalSeparator('|');
+//            unusualSymbols.setGroupingSeparator('^');
+            Number sum = new DecimalFormat("###,###.##", unusualSymbols).parse(sumString);
             return new Money((int) (sum.doubleValue() * 100), currency, 0.01);
 
         } catch (ParseException e) {

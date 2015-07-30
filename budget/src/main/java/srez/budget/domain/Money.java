@@ -1,7 +1,5 @@
 package srez.budget.domain;
 
-import com.google.common.base.MoreObjects;
-
 public class Money {
     private final int sum;
     private final String currency;
@@ -31,10 +29,10 @@ public class Money {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("sum", sum)
-                .add("currency", currency)
-                .add("multiplicator", multiplicator)
-                .toString();
+        StringBuilder result = new StringBuilder(getMoney() + "");
+        if (currency != null) {
+            result.append(' ').append(currency);
+        }
+        return result.toString();
     }
 }
