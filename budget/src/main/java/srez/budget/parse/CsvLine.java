@@ -48,6 +48,9 @@ public class CsvLine {
     }
 
     private static String unwrap(String result) {
+        if (result.charAt(0) != '"' || result.charAt(result.length() - 1) != '"') {
+            throw new IllegalArgumentException("Wrong format, no quotes");
+        }
         return result.substring(1, result.length() - 1);
     }
 
