@@ -6,6 +6,7 @@ import srez.budget.parse.Expense;
 import srez.budget.parse.ExpenseLoader;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
 import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.Map;
@@ -17,7 +18,13 @@ import static java.util.stream.Stream.of;
 
 @Component
 public class Analyzer {
-    private Expense[] expenses;
+    private static final String[] PATTERNS = {
+            "Own funds transfer",
+            "Sale of currency"
+    };
+
+    private Collection<Expense> expenses;
+    private Collection<Expense> expensesSpecial;
     private List<List<Expense>> grouped;
 
     @Autowired
@@ -25,10 +32,10 @@ public class Analyzer {
 
     @PostConstruct
     public void analyze() {
-        expenses = of(expenseLoader.getExpenses())
-                .filter(e -> !e.getDescription().contains("Own funds transfer"))
-                .filter(e -> !e.getDescription().contains("Sale of currency"))
-                .toArray(Expense[]::new);
+        Map<Boolean, List<Expense>> groupping = of(expenseLoader.getExpenses())
+                .collect(groupingBy(this::isSpecial));
+        expenses = groupping.get(false);
+        expensesSpecial = groupping.get(true);
 
         Map<Long, List<Expense>> byDate = of(expenseLoader.getExpenses())
                 .collect(groupingBy(e -> e.getPostingDate().toEpochDay()));
@@ -40,8 +47,17 @@ public class Analyzer {
                 .collect(toList());
     }
 
-    public Expense[] getExpenses() {
+    public boolean isSpecial(Expense expense) {
+        return of(PATTERNS)
+                .anyMatch(p -> expense.getDescription().contains(p));
+    }
+
+    public Collection<Expense> getExpenses() {
         return expenses;
+    }
+
+    public Collection<Expense> getExpensesSpecial() {
+        return expensesSpecial;
     }
 
     public List<List<Expense>> getGrouped() {

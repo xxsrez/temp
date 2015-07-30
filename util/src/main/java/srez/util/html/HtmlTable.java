@@ -9,10 +9,12 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.of;
 
 public class HtmlTable implements HtmlObject {
+    private final String tableName;
     private final String[] title;
     private final Collection<Object[]> data = new ArrayList<>();
 
-    public HtmlTable(String... title) {
+    public HtmlTable(String tableName, String... title) {
+        this.tableName = tableName;
         this.title = title;
     }
 
@@ -23,7 +25,7 @@ public class HtmlTable implements HtmlObject {
 
     @Override
     public String build() {
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder("<h3>" + tableName + "</h3>");
         result.append("<table>");
         Collector<CharSequence, ?, String> rawCollector = joining("</td><td>", "<tr><td>", "</td></tr>");
         result.append(of(title)

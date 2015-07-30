@@ -14,8 +14,6 @@ import srez.util.html.HtmlTable;
 import javax.annotation.PostConstruct;
 import java.io.*;
 
-import static java.util.stream.Stream.of;
-
 @Component
 @Profile("html")
 public class HtmlVisualizer {
@@ -44,13 +42,17 @@ public class HtmlVisualizer {
 
     public void buildReportRoot(File rootFile) {
         try {
-            HtmlTable expenseTable = new HtmlTable("TransactionDate", "PostingDate", "Description", "Money");
-            of(analyzer.getExpenses())
+            HtmlTable expenseTable = new HtmlTable("Expenses", "TransactionDate", "PostingDate", "Description", "Money");
+            analyzer.getExpenses().stream()
                     .forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney()));
+            HtmlTable expenseTableSpecial = new HtmlTable("Expenses Special", "TransactionDate", "PostingDate", "Description", "Money");
+            analyzer.getExpensesSpecial().stream()
+                    .forEach(e -> expenseTableSpecial.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney()));
 
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.append(new HtmlImage("graph.png"));
             htmlDocument.append(expenseTable);
+            htmlDocument.append(expenseTableSpecial);
             try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(rootFile)))) {
                 out.print(htmlDocument);
             }
