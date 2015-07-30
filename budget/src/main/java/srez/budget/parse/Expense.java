@@ -5,7 +5,7 @@ import srez.budget.domain.Money;
 
 import java.time.LocalDate;
 
-public class Expense {
+public class Expense implements Comparable<Expense> {
     private final LocalDate transactionDate;
     private final LocalDate postingDate;
     private final String description;
@@ -63,5 +63,10 @@ public class Expense {
                 .add("debit", debit)
                 .add("detailedInformation", detailedInformation)
                 .toString();
+    }
+
+    @Override
+    public int compareTo(Expense o) {
+        return postingDate.compareTo(o.postingDate);
     }
 }

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 import static java.nio.file.Files.lines;
+import static java.util.stream.Stream.of;
 
 @Component
 public class ExpenseLoader {
@@ -23,14 +24,19 @@ public class ExpenseLoader {
 
     @PostConstruct
     public void load() {
-        try {
-            expenses = lines(Paths.get(expenseProperties.getCsvFileName()))
-                    .map(CsvLine::new)
-                    .map(ExpenseLoader::fromCsv)
-                    .toArray(Expense[]::new);
-        } catch (IOException e) {
-            log.error("", e);
-        }
+        expenses = of(expenseProperties.getCsvFileName().split(","))
+                .flatMap(f -> {
+                    try {
+                        return lines(Paths.get(f));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .peek(l -> log.info("{}", l))
+                .map(CsvLine::new)
+                .map(ExpenseLoader::fromCsv)
+                .sorted()
+                .toArray(Expense[]::new);
     }
 
     public static Expense fromCsv(CsvLine line) {

@@ -5,8 +5,8 @@ import org.jfree.chart.JFreeChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import srez.budget.analyze.Analyzer;
 import srez.budget.domain.ExpenseProperties;
-import srez.budget.parse.ExpenseLoader;
 import srez.util.html.HtmlDocument;
 import srez.util.html.HtmlImage;
 import srez.util.html.HtmlTable;
@@ -20,7 +20,7 @@ import static java.util.stream.Stream.of;
 @Profile("html")
 public class HtmlVisualizer {
     @Autowired
-    ExpenseLoader expenseLoader;
+    Analyzer analyzer;
     @Autowired
     ExpenseGraph expenseGraph;
     @Autowired
@@ -45,7 +45,7 @@ public class HtmlVisualizer {
     public void buildReportRoot(File rootFile) {
         try {
             HtmlTable expenseTable = new HtmlTable("TransactionDate", "PostingDate", "Description", "Money");
-            of(expenseLoader.getExpenses())
+            of(analyzer.getExpenses())
                     .forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney()));
 
             HtmlDocument htmlDocument = new HtmlDocument();
