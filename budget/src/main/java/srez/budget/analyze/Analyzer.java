@@ -37,10 +37,10 @@ public class Analyzer {
 
     @PostConstruct
     public void analyze() {
-        Map<Boolean, List<Expense>> groupping = of(expenseLoader.getExpenses())
-                .collect(groupingBy(this::isSpecial));
-        expenses = groupping.get(false);
-        expensesSpecial = groupping.get(true);
+        Map<Boolean, List<Expense>> grouping = of(expenseLoader.getExpenses())
+                .collect(groupingBy(Analyzer::isSpecial));
+        expenses = grouping.get(false);
+        expensesSpecial = grouping.get(true);
 
         Map<Long, List<Expense>> byDate = of(expenseLoader.getExpenses())
                 .collect(groupingBy(e -> e.getPostingDate().toEpochDay()));
@@ -52,7 +52,7 @@ public class Analyzer {
                 .collect(toList());
     }
 
-    public boolean isSpecial(Expense expense) {
+    public static boolean isSpecial(Expense expense) {
         return of(PATTERNS)
                 .anyMatch(p -> expense.getDescription().contains(p));
     }
