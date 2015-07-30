@@ -10,17 +10,13 @@ public class Expense implements Comparable<Expense> {
     private final LocalDate postingDate;
     private final String description;
     private final Money money;
-    private final Money credit;
-    private final Money debit;
     private final String detailedInformation;
 
-    public Expense(LocalDate transactionDate, LocalDate postingDate, String description, Money money, Money credit, Money debit, String detailedInformation) {
+    public Expense(LocalDate transactionDate, LocalDate postingDate, String description, Money money, String detailedInformation) {
         this.transactionDate = transactionDate;
         this.postingDate = postingDate;
         this.description = description;
         this.money = money;
-        this.credit = credit;
-        this.debit = debit;
         this.detailedInformation = detailedInformation;
     }
 
@@ -40,14 +36,6 @@ public class Expense implements Comparable<Expense> {
         return money;
     }
 
-    public Money getCredit() {
-        return credit;
-    }
-
-    public Money getDebit() {
-        return debit;
-    }
-
     public String getDetailedInformation() {
         return detailedInformation;
     }
@@ -59,8 +47,6 @@ public class Expense implements Comparable<Expense> {
                 .add("postingDate", postingDate)
                 .add("description", description)
                 .add("money", money)
-                .add("credit", credit)
-                .add("debit", debit)
                 .add("detailedInformation", detailedInformation)
                 .toString();
     }
