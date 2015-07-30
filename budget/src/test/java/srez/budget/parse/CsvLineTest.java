@@ -16,9 +16,9 @@ public class CsvLineTest {
 
     @Test
     public void testMoney() throws Exception {
-        Money money = new CsvLine("\"74,935.00 RUR\"").getMoney(0);
+        Money money = new CsvLine("\"12,345.67 RUR\"").getMoney(0);
         assertEquals("RUR", money.getCurrency());
-        assertEquals(74935, money.getMoney());
+        assertEquals(12345.67, money.getMoney());
     }
 
     @Test
