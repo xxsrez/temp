@@ -30,7 +30,7 @@ public class Analyzer {
 
     private Collection<Expense> expenses;
     private Collection<Expense> expensesSpecial;
-    private List<List<Expense>> grouped;
+    private List<List<Expense>> groupedByDate;
 
     @Autowired
     ExpenseLoader expenseLoader;
@@ -47,7 +47,7 @@ public class Analyzer {
         LongSummaryStatistics statistics = byDate.keySet().stream()
                 .mapToLong(i -> i)
                 .summaryStatistics();
-        grouped = range(0, (int) (statistics.getMax() - statistics.getMin() + 1))
+        groupedByDate = range(0, (int) (statistics.getMax() - statistics.getMin() + 1))
                 .mapToObj(i -> byDate.get(i + statistics.getMin()))
                 .collect(toList());
     }
@@ -65,7 +65,7 @@ public class Analyzer {
         return expensesSpecial;
     }
 
-    public List<List<Expense>> getGrouped() {
-        return grouped;
+    public List<List<Expense>> getGroupedByDate() {
+        return groupedByDate;
     }
 }

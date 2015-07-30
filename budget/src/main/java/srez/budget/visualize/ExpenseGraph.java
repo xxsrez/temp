@@ -38,7 +38,7 @@ public class ExpenseGraph {
 
     public XYSeriesCollection dataset() {
         XYSeries series = new XYSeries("expenses");
-        more(analyzer.getGrouped().stream())
+        more(analyzer.getGroupedByDate().stream())
                 .withIndex()
                 .forEach(p -> series.add(
                         p.getKey().doubleValue(),
