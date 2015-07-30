@@ -20,7 +20,12 @@ import static java.util.stream.Stream.of;
 public class Analyzer {
     private static final String[] PATTERNS = {
             "Own funds transfer",
-            "Sale of currency"
+            "OWN FUNDS TRANSFER",
+            "Sale of currency",
+            "SALARY",
+            "Purchase of currency",
+            "B5 FX",
+            "P/O"
     };
 
     private Collection<Expense> expenses;
