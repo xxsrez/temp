@@ -31,7 +31,7 @@ public class CsvLine {
         try {
             String string = getString(index);
             if (string.isEmpty()) return null;
-            int spaceIdx = string.indexOf(" ");
+            int spaceIdx = string.indexOf(' ');
             String sumString;
             String currency;
             if (spaceIdx == -1) {
@@ -45,8 +45,6 @@ public class CsvLine {
 
             DecimalFormatSymbols unusualSymbols =
                     new DecimalFormatSymbols(currentLocale);
-//            unusualSymbols.setDecimalSeparator('|');
-//            unusualSymbols.setGroupingSeparator('^');
             Number sum = new DecimalFormat("###,###.##", unusualSymbols).parse(sumString);
             return new Money((int) (sum.doubleValue() * 100), currency, 0.01);
 

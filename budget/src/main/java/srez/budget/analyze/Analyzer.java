@@ -26,7 +26,8 @@ public class Analyzer {
     @PostConstruct
     public void analyze() {
         expenses = of(expenseLoader.getExpenses())
-                .filter(e -> e.getDescription() == null || !e.getDescription().contains("Own funds transfer"))
+                .filter(e -> !e.getDescription().contains("Own funds transfer"))
+                .filter(e -> !e.getDescription().contains("Sale of currency"))
                 .toArray(Expense[]::new);
 
         Map<Long, List<Expense>> byDate = of(expenseLoader.getExpenses())

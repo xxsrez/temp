@@ -1,6 +1,7 @@
 package srez.budget.parse;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ComparisonChain;
 import srez.budget.domain.Money;
 
 import java.time.LocalDate;
@@ -53,6 +54,9 @@ public class Expense implements Comparable<Expense> {
 
     @Override
     public int compareTo(Expense o) {
-        return postingDate.compareTo(o.postingDate);
+        return ComparisonChain.start()
+                .compare(postingDate, o.postingDate)
+                .compare(money.getMoney(), o.money.getMoney())
+                .result();
     }
 }
