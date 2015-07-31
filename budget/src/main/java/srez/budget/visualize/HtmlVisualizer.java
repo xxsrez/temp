@@ -43,7 +43,8 @@ public class HtmlVisualizer {
 
     public void buildReportRoot(File reportDir, HtmlDocument htmlDocument) {
         buildReport(reportDir, htmlDocument, analyzer.getReport());
-        analyzer.getGroupedByMonth().values()
+        analyzer.getGroupedByMonth().values().stream()
+                .sorted((r1, r2) -> -r1.compareTo(r2))
                 .forEach(r -> buildReport(reportDir, htmlDocument, r));
     }
 

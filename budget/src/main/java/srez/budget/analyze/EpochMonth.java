@@ -45,6 +45,6 @@ public class EpochMonth {
 
     @Override
     public String toString() {
-        return month + "." + year;
+        return year + "." + month.getValue();
     }
 }

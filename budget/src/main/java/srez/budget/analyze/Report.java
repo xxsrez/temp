@@ -1,5 +1,6 @@
 package srez.budget.analyze;
 
+import com.google.common.collect.ComparisonChain;
 import srez.budget.domain.Expense;
 
 import java.util.*;
@@ -7,7 +8,7 @@ import java.util.*;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.LongStream.range;
 
-public class Report {
+public class Report implements Comparable<Report> {
     private final String title;
     private final Collection<Expense> expenses;
     private final Map<Long, List<Expense>> groupedByDate;
@@ -51,5 +52,12 @@ public class Report {
 
     public double getAverage() {
         return average;
+    }
+
+    @Override
+    public int compareTo(Report o) {
+        return ComparisonChain.start()
+                .compare(title, o.title)
+                .result();
     }
 }
