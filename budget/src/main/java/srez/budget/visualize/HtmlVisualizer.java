@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import srez.budget.analyze.Analyzer;
 import srez.budget.analyze.Report;
+import srez.budget.domain.Expense;
 import srez.budget.domain.ExpenseProperties;
+import srez.budget.domain.Money;
 import srez.util.Pair;
 import srez.util.html.HtmlDocument;
 import srez.util.html.HtmlImage;
@@ -16,6 +18,7 @@ import srez.util.html.HtmlTable;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
+import java.util.Collection;
 
 import static org.jfree.chart.ChartUtilities.saveChartAsPNG;
 
@@ -65,6 +68,11 @@ public class HtmlVisualizer {
                         .mapToDouble(ex -> ex.getMoney().getMoney())
                         .sum()))
                 .forEach(p -> document.append(p.getKey() + ": " + p.getValue()).append("\n"));
+        document.append("Total: " + report.getGroupedByCategory().values().stream()
+                .flatMap(Collection::stream)
+                .map(Expense::getMoney)
+                .mapToDouble(Money::getMoney)
+                .sum());
 
 
         document.append(expenseTable);
