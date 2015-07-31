@@ -22,6 +22,12 @@ public enum Category {
     ),
     CREDIT(
             "AAQPAC"
+    ),
+    MOBILE(
+            "ITUNES"
+    ),
+    SMALL(
+            "APTEKA"
     );
 
     private final String[] patterns;
