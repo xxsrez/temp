@@ -10,13 +10,18 @@ public enum Category {
             "SALARY",
             "Purchase of currency",
             "B5 FX",
-            "P/O"
+            "P/O",
+            "CPL",
+            "HOTEL BEGA"
     ),
     FOOD_OTHER,
     AUTO(
             "AKSEL",
             "MAZK BP",
-            "NCH-SPB"
+            "NCH-SPB",
+            "PTK",
+            "LUKOIL",
+            "MOYKA NA LITEYNOM"
     ),
     ATM(
             "ATM"
@@ -27,13 +32,21 @@ public enum Category {
     MOBILE(
             "ITUNES",
             "YOTA",
-            "TWITCHTV"
+            "TWITCHTV",
+            "mobile pmnt"
     ),
     SMALL(
             "APTEKA",
+            "APTEEKK",
             "PETROFARM",
             "TAXI",
-            "SPORTMASTER"
+            "SPORTMASTER",
+            "THE LAB",
+            "ERMITAZH"
+    ),
+    RANDOM(
+            "DECATHLON",
+            "CALVIN KLEIN"
     );
 
     private final String[] patterns;
