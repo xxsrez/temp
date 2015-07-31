@@ -4,21 +4,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import srez.budget.domain.Expense;
 import srez.budget.domain.ExpenseProperties;
 import srez.budget.domain.Money;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Collection;
 
 import static java.nio.file.Files.lines;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.of;
 
 @Component
 public class ExpenseLoader {
     private static final Logger log = LoggerFactory.getLogger(ExpenseLoader.class);
 
-    private Expense[] expenses;
+    private Collection<Expense> expenses;
 
     @Autowired
     ExpenseProperties expenseProperties;
@@ -37,7 +40,7 @@ public class ExpenseLoader {
                 .map(CsvLine::new)
                 .map(ExpenseLoader::fromCsv)
                 .sorted()
-                .toArray(Expense[]::new);
+                .collect(toList());
     }
 
     public static Expense fromCsv(CsvLine line) {
@@ -49,11 +52,11 @@ public class ExpenseLoader {
                 line.getDate(1),
                 line.getString(2),
                 money,
-                line.getString(5)
-        );
+                line.getString(5),
+                null);
     }
 
-    public Expense[] getExpenses() {
+    public Collection<Expense> getExpenses() {
         return expenses;
     }
 }

@@ -44,7 +44,7 @@ public class ExpenseGraph {
 
     public XYSeriesCollection dataset() {
         XYSeries series = new XYSeries("expenses");
-        analyzer.getGroupedByDate()
+        analyzer.getReport().getGroupedByDate()
                 .forEach((k, v) -> series.add(
                         LocalDate.ofEpochDay(k).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli(),
                         Optional.ofNullable(v).map(Collection::stream).orElse(Stream.empty())

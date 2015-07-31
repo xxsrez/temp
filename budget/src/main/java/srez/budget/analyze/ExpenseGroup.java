@@ -1,8 +1,8 @@
 package srez.budget.analyze;
 
 import com.google.common.base.MoreObjects;
+import srez.budget.domain.Expense;
 import srez.budget.domain.Money;
-import srez.budget.parse.Expense;
 
 import java.util.Collection;
 

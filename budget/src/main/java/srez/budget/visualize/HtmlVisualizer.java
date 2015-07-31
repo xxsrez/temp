@@ -13,6 +13,9 @@ import srez.util.html.HtmlTable;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Component
 @Profile("html")
@@ -42,17 +45,17 @@ public class HtmlVisualizer {
 
     public void buildReportRoot(File rootFile) {
         try {
-            HtmlTable expenseTable = new HtmlTable("Expenses", "TransactionDate", "PostingDate", "Description", "Money");
-            analyzer.getExpenses().stream()
-                    .forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney()));
-            HtmlTable expenseTableSpecial = new HtmlTable("Expenses Special", "TransactionDate", "PostingDate", "Description", "Money");
-            analyzer.getExpensesSpecial().stream()
-                    .forEach(e -> expenseTableSpecial.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney()));
+            List<HtmlTable> htmlTables = analyzer.getReport().getGroupedByCategory().entrySet().stream()
+                    .map(entry -> {
+                        HtmlTable expenseTable = new HtmlTable("Expenses" + entry.getKey(), "TransactionDate", "PostingDate", "Description", "Money");
+                        entry.getValue().forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney()));
+                        return expenseTable;
+                    })
+                    .collect(toList());
 
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.append(new HtmlImage("graph.png"));
-            htmlDocument.append(expenseTable);
-            htmlDocument.append(expenseTableSpecial);
+            htmlTables.forEach(htmlDocument::append);
             try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(rootFile)))) {
                 out.print(htmlDocument);
             }

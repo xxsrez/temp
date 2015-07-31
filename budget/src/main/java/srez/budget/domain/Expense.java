@@ -1,8 +1,8 @@
-package srez.budget.parse;
+package srez.budget.domain;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ComparisonChain;
-import srez.budget.domain.Money;
+import srez.budget.analyze.Category;
 
 import java.time.LocalDate;
 
@@ -12,13 +12,24 @@ public class Expense implements Comparable<Expense> {
     private final String description;
     private final Money money;
     private final String detailedInformation;
+    private final Category category;
 
-    public Expense(LocalDate transactionDate, LocalDate postingDate, String description, Money money, String detailedInformation) {
+    public Expense(LocalDate transactionDate, LocalDate postingDate, String description, Money money, String detailedInformation, Category category) {
         this.transactionDate = transactionDate;
         this.postingDate = postingDate;
         this.description = description;
         this.money = money;
         this.detailedInformation = detailedInformation;
+        this.category = category;
+    }
+
+    public Expense(Expense expense, Category category) {
+        transactionDate = expense.transactionDate;
+        postingDate = expense.postingDate;
+        description = expense.description;
+        money = expense.money;
+        detailedInformation = expense.detailedInformation;
+        this.category = category;
     }
 
     public LocalDate getTransactionDate() {
@@ -39,6 +50,10 @@ public class Expense implements Comparable<Expense> {
 
     public String getDetailedInformation() {
         return detailedInformation;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     @Override

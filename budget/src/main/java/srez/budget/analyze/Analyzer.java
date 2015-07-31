@@ -2,14 +2,16 @@ package srez.budget.analyze;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import srez.budget.parse.Expense;
+import srez.budget.domain.Expense;
 import srez.budget.parse.ExpenseLoader;
+import srez.util.Pair;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
-import java.util.stream.LongStream;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.of;
 
 @Component
@@ -24,25 +26,32 @@ public class Analyzer {
             "P/O"
     };
 
-    private Collection<Expense> expenses;
-    private Collection<Expense> expensesSpecial;
-    private Map<Long, List<Expense>> groupedByDate;
+    private Report report;
+    private Map<EpochMonth, Report> groupedByMonth;
 
     @Autowired
     ExpenseLoader expenseLoader;
 
     @PostConstruct
     public void analyze() {
-        Map<Boolean, List<Expense>> grouping = of(expenseLoader.getExpenses())
-                .collect(groupingBy(Analyzer::isSpecial));
-        expenses = grouping.get(false);
-        expensesSpecial = grouping.get(true);
+        List<Expense> expenses = expenseLoader.getExpenses().stream()
+                .map(this::expand)
+                .collect(toList());
 
-        groupedByDate = expenses.stream()
-                .collect(groupingBy(e -> e.getPostingDate().toEpochDay()));
-        LongSummaryStatistics stats = groupedByDate.keySet().stream().mapToLong(i -> i).summaryStatistics();
-        LongStream.range(stats.getMin(), stats.getMax() + 1)
-                .forEach(l -> groupedByDate.computeIfAbsent(l, k -> Collections.<Expense>emptyList()));
+        report = new Report("Main", expenses);
+        groupedByMonth = expenses.stream()
+                .collect(groupingBy(e -> new EpochMonth(e.getPostingDate())))
+                .entrySet().stream()
+                .map(e -> new Pair<>(e.getKey(), new Report(e.getKey() + "", e.getValue())))
+                .collect(Pair.toMapCollector());
+    }
+
+    private Expense expand(Expense expense) {
+        if (isSpecial(expense)) {
+            return new Expense(expense, Category.INNER);
+        } else {
+            return new Expense(expense, Category.FOOD_OTHER);
+        }
     }
 
     public static boolean isSpecial(Expense expense) {
@@ -50,15 +59,11 @@ public class Analyzer {
                 .anyMatch(p -> expense.getDescription().contains(p));
     }
 
-    public Collection<Expense> getExpenses() {
-        return expenses;
+    public Report getReport() {
+        return report;
     }
 
-    public Collection<Expense> getExpensesSpecial() {
-        return expensesSpecial;
-    }
-
-    public Map<Long, List<Expense>> getGroupedByDate() {
-        return groupedByDate;
+    public Map<EpochMonth, Report> getGroupedByMonth() {
+        return groupedByMonth;
     }
 }
