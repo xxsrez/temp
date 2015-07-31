@@ -5,9 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import srez.budget.analyze.Analyzer;
-import srez.budget.analyze.EpochMonth;
+import srez.budget.analyze.Report;
 import srez.budget.domain.ExpenseProperties;
-import srez.util.Pair;
 import srez.util.html.HtmlDocument;
 import srez.util.html.HtmlImage;
 import srez.util.html.HtmlTable;
@@ -15,11 +14,9 @@ import srez.util.html.HtmlTable;
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 import static org.jfree.chart.ChartUtilities.saveChartAsPNG;
-import static srez.util.Pair.toMapCollector;
 
 @Component
 @Profile("html")
@@ -37,8 +34,7 @@ public class HtmlVisualizer {
         File reportDir = reportRoot.getParentFile();
         reportDir.mkdirs();
 
-        JFreeChart chart = expenseGraph.chart(analyzer.getReport());
-        saveChart(reportDir, chart);
+        saveChart(reportDir, analyzer.getReport());
         buildReportRoot(reportDir, reportRoot);
     }
 
@@ -51,15 +47,12 @@ public class HtmlVisualizer {
                         return expenseTable;
                     })
                     .collect(toList());
-            Map<EpochMonth, JFreeChart> charts = analyzer.getGroupedByMonth().entrySet().stream()
-                    .map(e -> new Pair<>(e.getKey(), expenseGraph.chart(e.getValue())))
-                    .collect(toMapCollector());
-            charts.forEach((k, v) -> saveChart(reportDir, v));
+            analyzer.getGroupedByMonth().forEach((k, v) -> saveChart(reportDir, v));
 
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.append(new HtmlImage("main.png"));
             htmlDocument.append("<BR/>\n");
-            charts.forEach((k, v) -> htmlDocument.append(new HtmlImage(v.getTitle() + ".png")));
+            analyzer.getGroupedByMonth().forEach((k, v) -> htmlDocument.append(new HtmlImage(v.getTitle() + ".png")));
             htmlTables.forEach(htmlDocument::append);
             try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(rootFile)))) {
                 out.print(htmlDocument);
@@ -69,9 +62,10 @@ public class HtmlVisualizer {
         }
     }
 
-    private void saveChart(File reportDir, JFreeChart chart) {
+    private void saveChart(File reportDir, Report report) {
         try {
-            saveChartAsPNG(new File(reportDir, chart.getTitle() + ".png"), chart, 800, 600);
+            JFreeChart chart = expenseGraph.chart(report);
+            saveChartAsPNG(new File(reportDir, report.getTitle() + ".png"), chart, 800, 600);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
