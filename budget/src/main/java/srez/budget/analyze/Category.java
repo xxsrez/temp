@@ -21,6 +21,7 @@ public enum Category {
             "NCH-SPB",
             "PTK",
             "LUKOIL",
+            "ELITSERVIS",
             "MOYKA NA LITEYNOM"
     ),
     ATM(
@@ -47,6 +48,9 @@ public enum Category {
     RANDOM(
             "DECATHLON",
             "CALVIN KLEIN"
+    ),
+    UNKNOWN(
+            "YM.GAMES"
     );
 
     private final String[] patterns;
