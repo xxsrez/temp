@@ -12,20 +12,9 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Stream.of;
 
 @Component
 public class Analyzer {
-    private static final String[] PATTERNS = {
-            "Own funds transfer",
-            "OWN FUNDS TRANSFER",
-            "Sale of currency",
-            "SALARY",
-            "Purchase of currency",
-            "B5 FX",
-            "P/O"
-    };
-
     private Report report;
     private Map<EpochMonth, Report> groupedByMonth;
 
@@ -48,16 +37,7 @@ public class Analyzer {
     }
 
     private Expense expand(Expense expense) {
-        if (isSpecial(expense)) {
-            return new Expense(expense, Category.INNER);
-        } else {
-            return new Expense(expense, Category.FOOD_OTHER);
-        }
-    }
-
-    public static boolean isSpecial(Expense expense) {
-        return of(PATTERNS)
-                .anyMatch(p -> expense.getDescription().contains(p));
+        return new Expense(expense, Category.find(expense.getDescription()));
     }
 
     public Report getReport() {
