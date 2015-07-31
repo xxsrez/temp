@@ -26,10 +26,12 @@ public enum Category {
     ),
     MOBILE(
             "ITUNES",
-            "YOTA"
+            "YOTA",
+            "TWITCHTV"
     ),
     SMALL(
             "APTEKA",
+            "PETROFARM",
             "TAXI",
             "SPORTMASTER"
     );
