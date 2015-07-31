@@ -8,6 +8,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.springframework.stereotype.Component;
+import srez.budget.analyze.Category;
 import srez.budget.analyze.Report;
 
 import java.text.SimpleDateFormat;
@@ -40,14 +41,24 @@ public class ExpenseGraph {
 
     public XYSeriesCollection dataset(Report report) {
         XYSeries series = new XYSeries("expenses");
+        XYSeries average = new XYSeries("average");
         report.getGroupedByDate()
-                .forEach((k, v) -> series.add(
-                        LocalDate.ofEpochDay(k).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli(),
-                        Optional.ofNullable(v).map(Collection::stream).orElse(Stream.empty())
-                                .mapToDouble(e -> e.getMoney().getMoney())
-                                .sum()
-                ));
-        return new XYSeriesCollection(series);
+                .forEach((k, v) -> {
+                    long key = LocalDate.ofEpochDay(k).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
+                    series.add(
+                            key,
+                            Optional.ofNullable(v).map(Collection::stream).orElse(Stream.empty())
+                                    .filter(e -> e.getCategory() != Category.INNER)
+                                    .mapToDouble(e -> e.getMoney().getMoney())
+                                    .sum()
+                    );
+                    average.add(key, report.getAverage());
+                });
+
+        XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
+        xySeriesCollection.addSeries(series);
+        xySeriesCollection.addSeries(average);
+        return xySeriesCollection;
     }
 
 }
