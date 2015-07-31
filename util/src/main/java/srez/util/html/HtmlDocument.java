@@ -6,12 +6,13 @@ public class HtmlDocument {
 
     private final StringBuilder inner = new StringBuilder();
 
-    public void append(HtmlObject htmlObject) {
-        append(htmlObject.build());
+    public HtmlDocument append(HtmlObject htmlObject) {
+        return append(htmlObject.build());
     }
 
-    public void append(String string) {
+    public HtmlDocument append(String string) {
         inner.append(string);
+        return this;
     }
 
     @Override

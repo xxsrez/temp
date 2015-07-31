@@ -9,12 +9,14 @@ import static java.util.stream.LongStream.range;
 
 public class Report {
     private final String title;
+    private final Collection<Expense> expenses;
     private final Map<Long, List<Expense>> groupedByDate;
     private final Map<Category, List<Expense>> groupedByCategory;
     private final double average;
 
     public Report(String title, Collection<Expense> expenses) {
         this.title = title;
+        this.expenses = expenses;
         groupedByDate = expenses.stream()
                 .collect(groupingBy(e -> e.getPostingDate().toEpochDay()));
         LongSummaryStatistics statistics = groupedByDate.keySet().stream()
@@ -41,6 +43,10 @@ public class Report {
 
     public Map<Category, List<Expense>> getGroupedByCategory() {
         return groupedByCategory;
+    }
+
+    public Collection<Expense> getExpenses() {
+        return expenses;
     }
 
     public double getAverage() {

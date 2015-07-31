@@ -13,9 +13,7 @@ import srez.util.html.HtmlTable;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
-import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 import static org.jfree.chart.ChartUtilities.saveChartAsPNG;
 
 @Component
@@ -29,40 +27,32 @@ public class HtmlVisualizer {
     ExpenseProperties expenseProperties;
 
     @PostConstruct
-    public void buildReport() {
+    public void buildReport() throws FileNotFoundException {
         File reportRoot = new File(expenseProperties.getHtmlLogPath());
         File reportDir = reportRoot.getParentFile();
         reportDir.mkdirs();
 
         saveChart(reportDir, analyzer.getReport());
-        buildReportRoot(reportDir, reportRoot);
+        HtmlDocument htmlDocument = new HtmlDocument();
+        buildReportRoot(reportDir, htmlDocument);
+        try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(reportRoot)))) {
+            out.print(htmlDocument);
+        }
+
     }
 
-    public void buildReportRoot(File reportDir, File rootFile) {
-        try {
-            List<HtmlTable> htmlTables = analyzer.getReport().getGroupedByCategory().entrySet().stream()
-                    .map(entry -> {
-                        HtmlTable expenseTable = new HtmlTable("Expenses" + entry.getKey(), "TransactionDate", "PostingDate", "Description", "Money");
-                        entry.getValue().forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney()));
-                        return expenseTable;
-                    })
-                    .collect(toList());
-            analyzer.getGroupedByMonth().forEach((k, v) -> saveChart(reportDir, v));
+    public void buildReportRoot(File reportDir, HtmlDocument htmlDocument) {
+        buildReport(reportDir, htmlDocument, analyzer.getReport());
+        analyzer.getGroupedByMonth().values()
+                .forEach(r -> buildReport(reportDir, htmlDocument, r));
+    }
 
-            HtmlDocument htmlDocument = new HtmlDocument();
-            htmlDocument.append(new HtmlImage("main.png"));
-            htmlDocument.append("<BR/>\n");
-            analyzer.getGroupedByMonth().forEach((k, v) -> {
-                htmlDocument.append(new HtmlImage(v.getTitle() + ".png"));
-                htmlDocument.append("<BR/>\n");
-            });
-            htmlTables.forEach(htmlDocument::append);
-            try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(rootFile)))) {
-                out.print(htmlDocument);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void buildReport(File reportDir, HtmlDocument document, Report report) {
+        saveChart(reportDir, report);
+        HtmlTable expenseTable = new HtmlTable("Expenses" + report.getTitle(), "TransactionDate", "PostingDate", "Description", "Money");
+        report.getExpenses().forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney()));
+        document.append(new HtmlImage(report.getTitle() + ".png")).append("\n");
+        document.append(expenseTable);
     }
 
     private void saveChart(File reportDir, Report report) {
