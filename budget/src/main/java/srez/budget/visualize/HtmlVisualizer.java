@@ -52,7 +52,10 @@ public class HtmlVisualizer {
             HtmlDocument htmlDocument = new HtmlDocument();
             htmlDocument.append(new HtmlImage("main.png"));
             htmlDocument.append("<BR/>\n");
-            analyzer.getGroupedByMonth().forEach((k, v) -> htmlDocument.append(new HtmlImage(v.getTitle() + ".png")));
+            analyzer.getGroupedByMonth().forEach((k, v) -> {
+                htmlDocument.append(new HtmlImage(v.getTitle() + ".png"));
+                htmlDocument.append("<BR/>\n");
+            });
             htmlTables.forEach(htmlDocument::append);
             try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(rootFile)))) {
                 out.print(htmlDocument);
