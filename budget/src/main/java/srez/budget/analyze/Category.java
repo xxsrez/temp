@@ -25,7 +25,8 @@ public enum Category {
             "MOYKA NA LITEYNOM"
     ),
     ATM(
-            "ATM"
+            "ATM",
+            "CASH"
     ),
     CREDIT(
             "AAQPAC"
@@ -34,6 +35,7 @@ public enum Category {
             "ITUNES",
             "YOTA",
             "TWITCHTV",
+            "GOOGLE.COM",
             "mobile pmnt"
     ),
     SMALL(
@@ -47,7 +49,9 @@ public enum Category {
     ),
     RANDOM(
             "DECATHLON",
-            "CALVIN KLEIN"
+            "CALVIN KLEIN",
+            "TRAVEL SUPERSAVER",
+            "RZD.RU"
     ),
     UNKNOWN(
             "YM.GAMES"
