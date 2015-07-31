@@ -38,7 +38,7 @@ public class Analyzer {
         expenses = grouping.get(false);
         expensesSpecial = grouping.get(true);
 
-        groupedByDate = of(expenseLoader.getExpenses())
+        groupedByDate = expenses.stream()
                 .collect(groupingBy(e -> e.getPostingDate().toEpochDay()));
         LongSummaryStatistics stats = groupedByDate.keySet().stream().mapToLong(i -> i).summaryStatistics();
         LongStream.range(stats.getMin(), stats.getMax() + 1)
