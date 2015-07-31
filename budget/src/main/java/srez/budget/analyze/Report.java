@@ -5,7 +5,8 @@ import srez.budget.domain.Expense;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public class Report {
     private final String title;
@@ -15,11 +16,9 @@ public class Report {
     public Report(String title, Collection<Expense> expenses) {
         this.title = title;
         groupedByDate = expenses.stream()
-                .collect(Collectors.groupingBy(e -> e.getPostingDate().toEpochDay()));
-
-
+                .collect(groupingBy(e -> e.getPostingDate().toEpochDay()));
         groupedByCategory = expenses.stream()
-                .collect(Collectors.groupingBy(Expense::getCategory));
+                .collect(groupingBy(Expense::getCategory));
     }
 
     public String getTitle() {
