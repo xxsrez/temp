@@ -1,12 +1,15 @@
 package srez.budget.visualize;
 
 import org.jfree.chart.JFreeChart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import srez.budget.analyze.Analyzer;
 import srez.budget.analyze.Report;
 import srez.budget.domain.ExpenseProperties;
+import srez.util.Pair;
 import srez.util.html.HtmlDocument;
 import srez.util.html.HtmlImage;
 import srez.util.html.HtmlTable;
@@ -19,6 +22,8 @@ import static org.jfree.chart.ChartUtilities.saveChartAsPNG;
 @Component
 @Profile("html")
 public class HtmlVisualizer {
+    private static final Logger log = LoggerFactory.getLogger(HtmlVisualizer.class);
+
     @Autowired
     Analyzer analyzer;
     @Autowired
@@ -52,7 +57,16 @@ public class HtmlVisualizer {
         saveChart(reportDir, report);
         HtmlTable expenseTable = new HtmlTable("Expenses" + report.getTitle(), "TransactionDate", "PostingDate", "Description", "Money");
         report.getExpenses().forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney()));
+
         document.append(new HtmlImage(report.getTitle() + ".png")).append("\n");
+
+        report.getGroupedByCategory().entrySet().stream()
+                .map(e -> new Pair<>(e.getKey(), e.getValue().stream()
+                        .mapToDouble(ex -> ex.getMoney().getMoney())
+                        .sum()))
+                .forEach(p -> document.append(p.getKey() + ": " + p.getValue()));
+
+
         document.append(expenseTable);
     }
 
