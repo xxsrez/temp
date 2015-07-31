@@ -6,10 +6,8 @@ import srez.budget.parse.Expense;
 import srez.budget.parse.ExpenseLoader;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.LongStream;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Stream.of;
@@ -28,7 +26,7 @@ public class Analyzer {
 
     private Collection<Expense> expenses;
     private Collection<Expense> expensesSpecial;
-    private Map<LocalDate, List<Expense>> groupedByDate;
+    private Map<Long, List<Expense>> groupedByDate;
 
     @Autowired
     ExpenseLoader expenseLoader;
@@ -41,7 +39,10 @@ public class Analyzer {
         expensesSpecial = grouping.get(true);
 
         groupedByDate = of(expenseLoader.getExpenses())
-                .collect(groupingBy(Expense::getPostingDate));
+                .collect(groupingBy(e -> e.getPostingDate().toEpochDay()));
+        LongSummaryStatistics stats = groupedByDate.keySet().stream().mapToLong(i -> i).summaryStatistics();
+        LongStream.range(stats.getMin(), stats.getMax() + 1)
+                .forEach(l -> groupedByDate.computeIfAbsent(l, k -> Collections.<Expense>emptyList()));
     }
 
     public static boolean isSpecial(Expense expense) {
@@ -57,7 +58,7 @@ public class Analyzer {
         return expensesSpecial;
     }
 
-    public Map<LocalDate, List<Expense>> getGroupedByDate() {
+    public Map<Long, List<Expense>> getGroupedByDate() {
         return groupedByDate;
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import srez.budget.analyze.Analyzer;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.Optional;
@@ -45,7 +46,7 @@ public class ExpenseGraph {
         XYSeries series = new XYSeries("expenses");
         analyzer.getGroupedByDate()
                 .forEach((k, v) -> series.add(
-                        k.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli(),
+                        LocalDate.ofEpochDay(k).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli(),
                         Optional.ofNullable(v).map(Collection::stream).orElse(Stream.empty())
                                 .mapToDouble(e -> e.getMoney().getMoney())
                                 .sum()
