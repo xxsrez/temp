@@ -14,10 +14,14 @@ public enum Category {
     ),
     FOOD_OTHER,
     AUTO(
-            "AKSEL"
+            "AKSEL",
+            "MAZK BP"
     ),
     ATM(
             "ATM"
+    ),
+    CREDIT(
+            "AAQPAC"
     );
 
     private final String[] patterns;
