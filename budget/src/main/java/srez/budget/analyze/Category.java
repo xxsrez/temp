@@ -15,7 +15,8 @@ public enum Category {
     FOOD_OTHER,
     AUTO(
             "AKSEL",
-            "MAZK BP"
+            "MAZK BP",
+            "NCH-SPB"
     ),
     ATM(
             "ATM"
@@ -24,10 +25,12 @@ public enum Category {
             "AAQPAC"
     ),
     MOBILE(
-            "ITUNES"
+            "ITUNES",
+            "YOTA"
     ),
     SMALL(
-            "APTEKA"
+            "APTEKA",
+            "TAXI"
     );
 
     private final String[] patterns;
