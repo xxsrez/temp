@@ -36,6 +36,7 @@ public class Analyzer {
     public void analyze() {
         List<Expense> expenses = expenseLoader.getExpenses().stream()
                 .map(this::expand)
+                .filter(e -> e.getCategory() != Category.INNER)
                 .collect(toList());
 
         report = new Report("Main", expenses);
