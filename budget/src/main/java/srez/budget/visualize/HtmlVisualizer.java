@@ -55,8 +55,8 @@ public class HtmlVisualizer {
 
     public void buildReport(File reportDir, HtmlDocument document, Report report) {
         saveChart(reportDir, report);
-        HtmlTable expenseTable = new HtmlTable("Expenses" + report.getTitle(), "TransactionDate", "PostingDate", "Description", "Money");
-        report.getExpenses().forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney()));
+        HtmlTable expenseTable = new HtmlTable("Expenses" + report.getTitle(), "TransactionDate", "PostingDate", "Description", "Money", "Category");
+        report.getExpenses().forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney(), e.getCategory()));
 
         document.append(new HtmlImage(report.getTitle() + ".png")).append("\n");
 
@@ -64,7 +64,7 @@ public class HtmlVisualizer {
                 .map(e -> new Pair<>(e.getKey(), e.getValue().stream()
                         .mapToDouble(ex -> ex.getMoney().getMoney())
                         .sum()))
-                .forEach(p -> document.append(p.getKey() + ": " + p.getValue()));
+                .forEach(p -> document.append(p.getKey() + ": " + p.getValue()).append("\n"));
 
 
         document.append(expenseTable);

@@ -13,8 +13,12 @@ public enum Category {
             "P/O"
     ),
     FOOD_OTHER,
-    AUTO,
-    ATM;
+    AUTO(
+            "AKSEL"
+    ),
+    ATM(
+            "ATM"
+    );
 
     private final String[] patterns;
 
