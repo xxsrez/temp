@@ -30,7 +30,8 @@ public enum Category {
     ),
     SMALL(
             "APTEKA",
-            "TAXI"
+            "TAXI",
+            "SPORTMASTER"
     );
 
     private final String[] patterns;
