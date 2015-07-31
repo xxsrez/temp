@@ -6,14 +6,12 @@ import srez.budget.parse.Expense;
 import srez.budget.parse.ExpenseLoader;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-import java.util.LongSummaryStatistics;
 import java.util.Map;
 
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.IntStream.range;
 import static java.util.stream.Stream.of;
 
 @Component
@@ -30,7 +28,7 @@ public class Analyzer {
 
     private Collection<Expense> expenses;
     private Collection<Expense> expensesSpecial;
-    private List<List<Expense>> groupedByDate;
+    private Map<LocalDate, List<Expense>> groupedByDate;
 
     @Autowired
     ExpenseLoader expenseLoader;
@@ -42,14 +40,8 @@ public class Analyzer {
         expenses = grouping.get(false);
         expensesSpecial = grouping.get(true);
 
-        Map<Long, List<Expense>> byDate = of(expenseLoader.getExpenses())
-                .collect(groupingBy(e -> e.getPostingDate().toEpochDay()));
-        LongSummaryStatistics statistics = byDate.keySet().stream()
-                .mapToLong(i -> i)
-                .summaryStatistics();
-        groupedByDate = range(0, (int) (statistics.getMax() - statistics.getMin() + 1))
-                .mapToObj(i -> byDate.get(i + statistics.getMin()))
-                .collect(toList());
+        groupedByDate = of(expenseLoader.getExpenses())
+                .collect(groupingBy(Expense::getPostingDate));
     }
 
     public static boolean isSpecial(Expense expense) {
@@ -65,7 +57,7 @@ public class Analyzer {
         return expensesSpecial;
     }
 
-    public List<List<Expense>> getGroupedByDate() {
+    public Map<LocalDate, List<Expense>> getGroupedByDate() {
         return groupedByDate;
     }
 }
