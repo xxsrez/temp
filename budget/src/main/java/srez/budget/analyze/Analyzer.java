@@ -39,7 +39,7 @@ public class Analyzer {
                 .filter(e -> e.getCategory() != Category.INNER)
                 .collect(toList());
 
-        report = new Report("Main", expenses);
+        report = new Report("main", expenses);
         groupedByMonth = expenses.stream()
                 .collect(groupingBy(e -> new EpochMonth(e.getPostingDate())))
                 .entrySet().stream()
