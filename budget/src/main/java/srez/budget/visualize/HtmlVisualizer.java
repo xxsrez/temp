@@ -34,7 +34,7 @@ public class HtmlVisualizer {
             File reportDir = reportRoot.getParentFile();
             reportDir.mkdirs();
 
-            JFreeChart chart = expenseGraph.chart();
+            JFreeChart chart = expenseGraph.chart(analyzer.getReport());
             ChartUtilities.saveChartAsPNG(new File(reportDir, "graph.png"), chart, 800, 600);
             buildReportRoot(reportRoot);
 

@@ -7,9 +7,8 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import srez.budget.analyze.Analyzer;
+import srez.budget.analyze.Report;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -22,15 +21,12 @@ import static org.jfree.chart.ChartFactory.createXYLineChart;
 
 @Component
 public class ExpenseGraph {
-    @Autowired
-    Analyzer analyzer;
-
-    public JFreeChart chart() {
+    public JFreeChart chart(Report report) {
         JFreeChart chart = createXYLineChart(
                 "Expenses chart",
                 "Day",
                 "Expenses",
-                dataset(),
+                dataset(report),
                 PlotOrientation.VERTICAL,
                 true, true, false);
         XYPlot plot = chart.getXYPlot();
@@ -42,9 +38,9 @@ public class ExpenseGraph {
         return chart;
     }
 
-    public XYSeriesCollection dataset() {
+    public XYSeriesCollection dataset(Report report) {
         XYSeries series = new XYSeries("expenses");
-        analyzer.getReport().getGroupedByDate()
+        report.getGroupedByDate()
                 .forEach((k, v) -> series.add(
                         LocalDate.ofEpochDay(k).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli(),
                         Optional.ofNullable(v).map(Collection::stream).orElse(Stream.empty())
