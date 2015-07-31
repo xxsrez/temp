@@ -23,7 +23,7 @@ import static org.jfree.chart.ChartFactory.createXYLineChart;
 public class ExpenseGraph {
     public JFreeChart chart(Report report) {
         JFreeChart chart = createXYLineChart(
-                "Expenses chart",
+                "Expenses chart: " + report.getTitle(),
                 "Day",
                 "Expenses",
                 dataset(report),
