@@ -30,6 +30,7 @@ public class PieGraph {
                         .map(Expense::getMoney)
                         .mapToDouble(Money::getMoney)
                         .sum()))
+                .sorted((p1, p2) -> p1.getKey().compareTo(p2.getKey()))
                 .forEach(p -> dataset.setValue(p.getKey().name(), abs(p.getValue())));
         return dataset;
     }
