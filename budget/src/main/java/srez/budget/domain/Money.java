@@ -1,18 +1,20 @@
 package srez.budget.domain;
 
+import static com.google.common.base.Strings.repeat;
+
 public class Money {
     private final int sum;
     private final String currency;
-    private final double multiplicator;
+    private final int divident;
 
-    public Money(int sum, String currency, double multiplicator) {
+    public Money(int sum, String currency, int divident) {
         this.sum = sum;
         this.currency = currency;
-        this.multiplicator = multiplicator;
+        this.divident = divident;
     }
 
     public double getMoney() {
-        return sum * multiplicator;
+        return (double) sum / divident;
     }
 
     public int getSum() {
@@ -23,13 +25,23 @@ public class Money {
         return currency;
     }
 
-    public double getMultiplicator() {
-        return multiplicator;
+    public int getDivident() {
+        return divident;
     }
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder(getMoney() + "");
+        StringBuilder result = new StringBuilder();
+        result.append(sum / divident);
+        int restPart = sum % divident;
+        if (restPart != 0) {
+            result.append('.');
+            int missing = (divident + "").length() - (restPart + "").length() - 1;
+            if (missing > 0) {
+                result.append(repeat(" ", missing));
+            }
+            result.append(restPart);
+        }
         if (currency != null) {
             result.append(' ').append(currency);
         }

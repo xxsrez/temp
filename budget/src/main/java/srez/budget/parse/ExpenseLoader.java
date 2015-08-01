@@ -46,7 +46,7 @@ public class ExpenseLoader {
     public static Expense fromCsv(CsvLine line) {
         Money moneyCurrency = line.getMoney(3);
         Money moneySigned = line.getMoney(4);
-        Money money = new Money(moneySigned.getSum(), moneyCurrency.getCurrency(), moneyCurrency.getMultiplicator());
+        Money money = new Money(moneySigned.getSum(), moneyCurrency.getCurrency(), moneyCurrency.getDivident());
         return new Expense(
                 line.getDate(0),
                 line.getDate(1),

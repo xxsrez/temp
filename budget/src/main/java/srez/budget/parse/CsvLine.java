@@ -46,7 +46,7 @@ public class CsvLine {
             DecimalFormatSymbols unusualSymbols =
                     new DecimalFormatSymbols(currentLocale);
             Number sum = new DecimalFormat("###,###.##", unusualSymbols).parse(sumString);
-            return new Money((int) (sum.doubleValue() * 100), currency, 0.01);
+            return new Money((int) (sum.doubleValue() * 100), currency, 100);
 
         } catch (ParseException e) {
             throw new RuntimeException(e);
