@@ -49,7 +49,7 @@ public class Money {
             result.append('.');
             int missing = (divident + "").length() - (modPart + "").length() - 1;
             if (missing > 0) {
-                result.append(repeat(" ", missing));
+                result.append(repeat("0", missing));
             }
             result.append(modPart);
         }
