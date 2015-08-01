@@ -4,6 +4,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import srez.budget.analyze.Report;
+import srez.budget.domain.Expense;
+import srez.budget.domain.Money;
 import srez.util.Pair;
 
 import static org.jfree.chart.ChartFactory.createPieChart;
@@ -21,8 +23,9 @@ public class PieGraph {
     private PieDataset dataset(Report report) {
         DefaultPieDataset dataset = new DefaultPieDataset();
         report.getGroupedByCategory().entrySet().stream()
-                .map(e -> new Pair<>(e.getKey(), e.getValue().stream()
-                        .mapToDouble(e2 -> e2.getMoney().getMoney())
+                .map(l -> new Pair<>(l.getKey(), l.getValue().stream()
+                        .map(Expense::getMoney)
+                        .mapToDouble(Money::getMoney)
                         .sum()))
                 .forEach(p -> dataset.setValue(p.getKey().name(), p.getValue()));
         return dataset;
