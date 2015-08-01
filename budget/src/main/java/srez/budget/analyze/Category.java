@@ -14,7 +14,7 @@ public enum Category {
             "CPL",
             "HOTEL BEGA"
     ),
-    FOOD_OTHER,
+    FOOD,
     AUTO(
             "AKSEL",
             "MAZK BP",
@@ -66,6 +66,6 @@ public enum Category {
     public static Category find(String line) {
         return of(Category.values())
                 .filter(c -> of(c.patterns).anyMatch(line::contains))
-                .findAny().orElse(FOOD_OTHER);
+                .findAny().orElse(FOOD);
     }
 }
