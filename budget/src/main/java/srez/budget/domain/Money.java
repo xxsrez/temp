@@ -32,18 +32,26 @@ public class Money {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        result.append(sum / divident);
-        int restPart = sum % divident;
-        if (restPart != 0) {
+        result.append(format(sum, divident));
+        if (currency != null) {
+            result.append(' ').append(currency);
+        }
+        return result.toString();
+    }
+
+    private String format(int value, int divident) {
+        if (value < 0) return '-' + format(-value, divident);
+        StringBuilder result = new StringBuilder();
+        int intPart = value / divident;
+        int modPart = value % divident;
+        result.append(intPart);
+        if (modPart != 0) {
             result.append('.');
-            int missing = (divident + "").length() - (restPart + "").length() - 1;
+            int missing = (divident + "").length() - (modPart + "").length() - 1;
             if (missing > 0) {
                 result.append(repeat(" ", missing));
             }
-            result.append(restPart);
-        }
-        if (currency != null) {
-            result.append(' ').append(currency);
+            result.append(modPart);
         }
         return result.toString();
     }
