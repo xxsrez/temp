@@ -2,6 +2,7 @@ package srez.budget.parse;
 
 import srez.budget.domain.Money;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
@@ -42,15 +43,18 @@ public class CsvLine {
                 currency = string.substring(spaceIdx + 1);
             }
             Locale currentLocale = new Locale("en", "US");
-
             DecimalFormatSymbols unusualSymbols =
                     new DecimalFormatSymbols(currentLocale);
-            Number sum = new DecimalFormat("###,###.##", unusualSymbols).parse(sumString);
-            return new Money((int) (sum.doubleValue() * 100), currency, 100);
+            DecimalFormat decimalFormat = new DecimalFormat("###,###.##", unusualSymbols);
+            decimalFormat.setParseBigDecimal(true);
+            BigDecimal sum = (BigDecimal) decimalFormat.parse(sumString);
+
+            return new Money(sum, currency);
 
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     private static String unwrap(String result) {

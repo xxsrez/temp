@@ -26,7 +26,7 @@ public class Report implements Comparable<Report> {
         range(statistics.getMin(), statistics.getMax() + 1)
                 .forEach(l -> groupedByDate.computeIfAbsent(l, k -> Collections.<Expense>emptyList()));
         double totalSum = expenses.stream()
-                .mapToDouble(e -> e.getMoney().getMoney())
+                .mapToDouble(e -> e.getMoney().getMoney().doubleValue())
                 .sum();
         average = totalSum / groupedByDate.size();
 

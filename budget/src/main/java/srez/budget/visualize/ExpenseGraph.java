@@ -49,7 +49,7 @@ public class ExpenseGraph {
                             key,
                             Optional.ofNullable(v).map(Collection::stream).orElse(Stream.empty())
                                     .filter(e -> e.getCategory() != Category.INNER)
-                                    .mapToDouble(e -> e.getMoney().getMoney())
+                                    .mapToDouble(e -> e.getMoney().getMoney().doubleValue())
                                     .sum()
                     );
                     average.add(key, report.getAverage());

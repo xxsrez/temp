@@ -6,7 +6,6 @@ import org.jfree.data.general.PieDataset;
 import org.springframework.stereotype.Component;
 import srez.budget.analyze.Report;
 import srez.budget.domain.Expense;
-import srez.budget.domain.Money;
 import srez.util.Pair;
 
 import static java.lang.Math.abs;
@@ -28,7 +27,7 @@ public class PieGraph {
         report.getGroupedByCategory().entrySet().stream()
                 .map(l -> new Pair<>(l.getKey(), l.getValue().stream()
                         .map(Expense::getMoney)
-                        .mapToDouble(Money::getMoney)
+                        .mapToDouble(m -> m.getMoney().doubleValue())
                         .sum()))
                 .sorted((p1, p2) -> p1.getKey().compareTo(p2.getKey()))
                 .forEach(p -> dataset.setValue(p.getKey().name(), abs(p.getValue())));
