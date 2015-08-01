@@ -73,7 +73,8 @@ public class HtmlVisualizer {
                 .flatMap(Collection::stream)
                 .map(Expense::getMoney)
                 .mapToDouble(m -> m.getMoney().doubleValue())
-                .sum());
+                .sum() + '\n');
+        document.append("Average/day: " + report.getAverage());
 
 
         document.append(expenseTable);
