@@ -14,6 +14,7 @@ public class Report implements Comparable<Report> {
     private final Map<Long, List<Expense>> groupedByDate;
     private final Map<Category, List<Expense>> groupedByCategory;
     private final double average;
+    private final int days;
 
     public Report(String title, Collection<Expense> expenses) {
         this.title = title;
@@ -28,7 +29,8 @@ public class Report implements Comparable<Report> {
         double totalSum = expenses.stream()
                 .mapToDouble(e -> e.getMoney().getMoney().doubleValue())
                 .sum();
-        average = totalSum / groupedByDate.size();
+        days = groupedByDate.size();
+        average = totalSum / days;
 
         groupedByCategory = expenses.stream()
                 .collect(groupingBy(Expense::getCategory));
@@ -52,6 +54,10 @@ public class Report implements Comparable<Report> {
 
     public double getAverage() {
         return average;
+    }
+
+    public int getDays() {
+        return days;
     }
 
     @Override
