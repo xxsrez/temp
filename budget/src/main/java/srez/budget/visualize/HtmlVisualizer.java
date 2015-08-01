@@ -1,6 +1,5 @@
 package srez.budget.visualize;
 
-import org.jfree.chart.JFreeChart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,8 @@ public class HtmlVisualizer {
     @Autowired
     ExpenseGraph expenseGraph;
     @Autowired
+    PieGraph pieGraph;
+    @Autowired
     ExpenseProperties expenseProperties;
 
     @PostConstruct
@@ -62,6 +63,7 @@ public class HtmlVisualizer {
         report.getExpenses().forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney(), e.getCategory()));
 
         document.append(new HtmlImage(report.getTitle() + ".png")).append("\n");
+        document.append(new HtmlImage(report.getTitle() + "2.png")).append("\n");
 
         report.getGroupedByCategory().entrySet().stream()
                 .map(e -> new Pair<>(e.getKey(), e.getValue().stream()
@@ -80,8 +82,8 @@ public class HtmlVisualizer {
 
     private void saveChart(File reportDir, Report report) {
         try {
-            JFreeChart chart = expenseGraph.chart(report);
-            saveChartAsPNG(new File(reportDir, report.getTitle() + ".png"), chart, 800, 600);
+            saveChartAsPNG(new File(reportDir, report.getTitle() + ".png"), expenseGraph.chart(report), 800, 600);
+            saveChartAsPNG(new File(reportDir, report.getTitle() + "2.png"), pieGraph.chart(report), 800, 600);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
