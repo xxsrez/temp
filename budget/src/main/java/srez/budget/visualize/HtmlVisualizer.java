@@ -1,7 +1,5 @@
 package srez.budget.visualize;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -25,8 +23,6 @@ import static org.jfree.chart.ChartUtilities.saveChartAsPNG;
 @Component
 @Profile("html")
 public class HtmlVisualizer {
-    private static final Logger log = LoggerFactory.getLogger(HtmlVisualizer.class);
-
     @Autowired
     Analyzer analyzer;
     @Autowired
@@ -63,8 +59,9 @@ public class HtmlVisualizer {
         HtmlTable expenseTable = new HtmlTable("Expenses" + report.getTitle(), "TransactionDate", "PostingDate", "Description", "Money", "Category");
         report.getExpenses().forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney(), e.getCategory()));
 
-        document.append(new HtmlImage(report.getTitle() + ".png")).append("\n");
-        document.append(new HtmlImage(report.getTitle() + "2.png")).append("\n");
+        document.append(new HtmlImage(getImageUrl1(report))).append("\n");
+        document.append(new HtmlImage(
+                getImageUrl2(report))).append("\n");
 
         report.getGroupedByCategory().entrySet().stream()
                 .map(e -> new Pair<>(e.getKey(), e.getValue().stream()
@@ -87,10 +84,18 @@ public class HtmlVisualizer {
 
     private void saveChart(File reportDir, Report report) {
         try {
-            saveChartAsPNG(new File(reportDir, report.getTitle() + ".png"), expenseGraph.chart(report), 800, 600);
-            saveChartAsPNG(new File(reportDir, report.getTitle() + "2.png"), pieGraph.chart(report), 800, 600);
+            saveChartAsPNG(new File(reportDir, getImageUrl1(report)), expenseGraph.chart(report), 800, 600);
+            saveChartAsPNG(new File(reportDir, getImageUrl2(report)), pieGraph.chart(report), 800, 600);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String getImageUrl1(Report report) {
+        return report.getTitle() + ".png";
+    }
+
+    private String getImageUrl2(Report report) {
+        return report.getTitle() + "2.png";
     }
 }
