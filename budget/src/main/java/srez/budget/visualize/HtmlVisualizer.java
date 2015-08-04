@@ -60,8 +60,7 @@ public class HtmlVisualizer {
         report.getExpenses().forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney(), e.getCategory()));
 
         document.append(new HtmlImage(getImageUrl1(report))).append("\n");
-        document.append(new HtmlImage(
-                getImageUrl2(report))).append("\n");
+        document.append(new HtmlImage(getImageUrl2(report))).append("\n");
 
         report.getGroupedByCategory().entrySet().stream()
                 .map(e -> new Pair<>(e.getKey(), e.getValue().stream()
@@ -91,11 +90,11 @@ public class HtmlVisualizer {
         }
     }
 
-    private String getImageUrl1(Report report) {
+    private static String getImageUrl1(Report report) {
         return report.getTitle() + ".png";
     }
 
-    private String getImageUrl2(Report report) {
+    private static String getImageUrl2(Report report) {
         return report.getTitle() + "2.png";
     }
 }
