@@ -76,7 +76,8 @@ public class HtmlVisualizer {
         document.append("Total: " + report.getGroupedByCategory().values().stream()
                 .flatMap(Collection::stream)
                 .map(Expense::getMoney)
-                .mapToDouble(m -> m.getMoney().doubleValue())
+                .map(Money::getMoney)
+                .mapToDouble(BigDecimal::doubleValue)
                 .sum() + '\n');
         document.append("Average/day: " + report.getAverage());
 
