@@ -59,8 +59,8 @@ public class HtmlVisualizer {
         HtmlTable expenseTable = new HtmlTable("Expenses" + report.getTitle(), "TransactionDate", "PostingDate", "Description", "Money", "Category");
         report.getExpenses().forEach(e -> expenseTable.add(e.getTransactionDate(), e.getPostingDate(), e.getDescription(), e.getMoney(), e.getCategory()));
 
-        document.append(new HtmlImage(getImageUrl1(report))).append("\n");
-        document.append(new HtmlImage(getImageUrl2(report))).append("\n");
+        document.append(new HtmlImage(getImageUrlGraph(report))).append("\n");
+        document.append(new HtmlImage(getImageUrlPie(report))).append("\n");
 
         report.getGroupedByCategory().entrySet().stream()
                 .map(e -> new Pair<>(e.getKey(), e.getValue().stream()
@@ -83,18 +83,18 @@ public class HtmlVisualizer {
 
     private void saveChart(File reportDir, Report report) {
         try {
-            saveChartAsPNG(new File(reportDir, getImageUrl1(report)), expenseGraph.chart(report), 800, 600);
-            saveChartAsPNG(new File(reportDir, getImageUrl2(report)), pieGraph.chart(report), 800, 600);
+            saveChartAsPNG(new File(reportDir, getImageUrlGraph(report)), expenseGraph.chart(report), 800, 600);
+            saveChartAsPNG(new File(reportDir, getImageUrlPie(report)), pieGraph.chart(report), 800, 600);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static String getImageUrl1(Report report) {
+    private static String getImageUrlGraph(Report report) {
         return report.getTitle() + ".png";
     }
 
-    private static String getImageUrl2(Report report) {
+    private static String getImageUrlPie(Report report) {
         return report.getTitle() + "2.png";
     }
 }
