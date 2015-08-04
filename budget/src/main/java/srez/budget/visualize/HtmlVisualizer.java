@@ -91,10 +91,10 @@ public class HtmlVisualizer {
     }
 
     private static String getImageUrlGraph(Report report) {
-        return report.getTitle() + ".png";
+        return report.getTitle() + "Graph.png";
     }
 
     private static String getImageUrlPie(Report report) {
-        return report.getTitle() + "2.png";
+        return report.getTitle() + "Pie.png";
     }
 }
