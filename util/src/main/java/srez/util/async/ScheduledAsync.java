@@ -2,6 +2,7 @@ package srez.util.async;
 
 import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static srez.util.async.NamedDaemonFactory.newSingleThreadScheduledExecutor;
@@ -19,12 +20,12 @@ public class ScheduledAsync extends AbstractAsync {
 
     @Override
     protected Cancellation doExec(Runnable runnable) {
+        ScheduledFuture<?> future;
         if (period == null) {
-            executor.schedule(runnable, delay.getNano(), TimeUnit.NANOSECONDS);
+            future = executor.schedule(runnable, delay.getNano(), TimeUnit.NANOSECONDS);
         } else {
-            executor.scheduleAtFixedRate(runnable, delay.getNano(), period.getNano(), TimeUnit.NANOSECONDS);
+            future = executor.scheduleAtFixedRate(runnable, delay.getNano(), period.getNano(), TimeUnit.NANOSECONDS);
         }
-        return new Cancellation(() -> {
-        });
+        return new Cancellation(() -> future.cancel(true));
     }
 }
