@@ -5,10 +5,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import static java.util.concurrent.CompletableFuture.runAsync;
 
-public class Cancelation implements SafeAutoCloseable {
+public class Cancellation implements SafeAutoCloseable {
     private final Collection<Runnable> cancelActions = new CopyOnWriteArrayList<>();
 
-    public Cancelation(Runnable cancelAction) {
+    public Cancellation(Runnable cancelAction) {
         thenRun(cancelAction);
     }
 

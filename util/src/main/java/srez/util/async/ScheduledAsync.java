@@ -18,13 +18,13 @@ public class ScheduledAsync extends AbstractAsync {
     }
 
     @Override
-    protected Cancelation doExec(Runnable runnable) {
+    protected Cancellation doExec(Runnable runnable) {
         if (period == null) {
             executor.schedule(runnable, delay.getNano(), TimeUnit.NANOSECONDS);
         } else {
             executor.scheduleAtFixedRate(runnable, delay.getNano(), period.getNano(), TimeUnit.NANOSECONDS);
         }
-        return new Cancelation(() -> {
+        return new Cancellation(() -> {
         });
     }
 }

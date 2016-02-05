@@ -23,9 +23,9 @@ public abstract class AbstractAsync {
         return this;
     }
 
-    protected abstract Cancelation doExec(Runnable runnable);
+    protected abstract Cancellation doExec(Runnable runnable);
 
-    public Cancelation exec(Runnable runnable) {
+    public Cancellation exec(Runnable runnable) {
         doExec(() ->
                 executor.execute(() -> {
                     try {

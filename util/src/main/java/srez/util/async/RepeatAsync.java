@@ -8,8 +8,8 @@ public class RepeatAsync extends AbstractAsync {
     }
 
     @Override
-    public Cancelation doExec(Runnable runnable) {
-        return new Cancelation(() -> {
+    public Cancellation doExec(Runnable runnable) {
+        return new Cancellation(() -> {
         });
     }
 }
