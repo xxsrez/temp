@@ -19,7 +19,8 @@ public class NamedDaemonFactory implements ThreadFactory {
 
     public static NamedDaemonFactory create(Object owner, String threadName) {
         AtomicLong adder = new AtomicLong();
-        return new NamedDaemonFactory(owner + "-" + threadName + "-", adder::getAndIncrement);
+        String prefix = owner instanceof Class ? ((Class<?>) owner).getSimpleName() : String.valueOf(owner);
+        return new NamedDaemonFactory(prefix + "-" + threadName + "-", adder::getAndIncrement);
     }
 
     public static ScheduledExecutorService newSingleThreadScheduledExecutor(Object owner, String threadName) {
