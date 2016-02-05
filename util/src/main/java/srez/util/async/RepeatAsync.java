@@ -8,7 +8,7 @@ public class RepeatAsync extends AbstractAsync {
     }
 
     @Override
-    public void impl(Runnable runnable) {
-
+    public void exec(Runnable runnable) {
+        while (true) runnable.run();
     }
 }
