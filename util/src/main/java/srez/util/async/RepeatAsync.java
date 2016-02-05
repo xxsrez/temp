@@ -2,6 +2,7 @@ package srez.util.async;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 import static java.util.stream.IntStream.range;
 import static srez.util.async.NamedDaemonFactory.newFixedThreadPool;
@@ -17,6 +18,12 @@ public class RepeatAsync extends AbstractAsync {
     @Override
     public RepeatAsync executor(Executor executor) {
         super.executor(executor);
+        return this;
+    }
+
+    @Override
+    public RepeatAsync exceptionHandler(Consumer<Throwable> exceptionHandler) {
+        super.exceptionHandler(exceptionHandler);
         return this;
     }
 

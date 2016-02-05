@@ -1,18 +1,16 @@
 package srez.util.async;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.lang.Thread.currentThread;
 import static org.testng.Assert.assertTrue;
+import static srez.util.Delayer.sleep;
 
 public class AsyncTest {
-    private static final Logger log = LoggerFactory.getLogger(AsyncTest.class);
-
     @Test(invocationTimeOut = 1000)
     public void testInstant() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
@@ -34,17 +32,22 @@ public class AsyncTest {
 
     @Test
     public void testException() throws Exception {
-        log.info("testException()");
-        Async.instant().exec(() -> {
+        AtomicBoolean caughtException = new AtomicBoolean();
+        Async.instant().exceptionHandler(t -> caughtException.set(true)).exec(() -> {
             throw new RuntimeException();
         });
+        sleep(10);
+        assertTrue(caughtException.get());
     }
 
     @Test
     public void testError() throws Exception {
-        Async.instant().exec(() -> {
+        AtomicBoolean caughtException = new AtomicBoolean();
+        Async.instant().exceptionHandler(t -> caughtException.set(true)).exec(() -> {
             throw new Error();
         });
+        sleep(10);
+        assertTrue(caughtException.get());
     }
 
 }

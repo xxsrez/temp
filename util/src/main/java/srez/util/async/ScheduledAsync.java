@@ -5,6 +5,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import static srez.util.async.NamedDaemonFactory.newSingleThreadScheduledExecutor;
 
@@ -31,6 +32,12 @@ public class ScheduledAsync extends AbstractAsync {
 
     public ScheduledAsync direct() {
         setExecutor(Runnable::run);
+        return this;
+    }
+
+    @Override
+    public ScheduledAsync exceptionHandler(Consumer<Throwable> exceptionHandler) {
+        super.exceptionHandler(exceptionHandler);
         return this;
     }
 
