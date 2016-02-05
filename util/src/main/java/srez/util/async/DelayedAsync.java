@@ -37,11 +37,12 @@ public class DelayedAsync extends ScheduledAsync {
     @Override
     protected CancellableFuture doExec(Executor executor, Runnable runnable) {
         CountDownLatch latch = new CountDownLatch(1);
-        Runnable wrapped = () -> {
-            runnable.run();
-            latch.countDown();
+        Runnable wrapped = () -> executor.execute(
+                () -> {
+                    runnable.run();
+                    latch.countDown();
+                });
 
-        };
         ScheduledFuture<?> future = SCHEDULED_EXECUTOR_SERVICE.schedule(wrapped, getDelay().getNano(), TimeUnit.NANOSECONDS);
         return new CancellableFuture(() -> future.cancel(true), latch);
     }
