@@ -12,6 +12,11 @@ public class RepeatAsync extends AbstractAsync {
     }
 
     @Override
+    public AbstractAsync direct() {
+        throw new IllegalStateException();
+    }
+
+    @Override
     public Cancellation doExec(Runnable runnable) {
         range(0, threadCount).forEach(i -> runnable.run());
         return new Cancellation(() -> {
