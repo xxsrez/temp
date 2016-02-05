@@ -7,12 +7,12 @@ public interface Async {
         return delay(Duration.ZERO);
     }
 
-    static ScheduledAsync delay(Duration duration) {
-        return new ScheduledAsync(duration, null);
+    static ScheduledAsync delay(Duration delay) {
+        return interval(null).delay(delay);
     }
 
     static ScheduledAsync interval(Duration duration) {
-        return new ScheduledAsync(Duration.ZERO, duration);
+        return new ScheduledAsync(duration);
     }
 
     static RepeatAsync repeat() {

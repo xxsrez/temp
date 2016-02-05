@@ -11,12 +11,16 @@ import static srez.util.async.NamedDaemonFactory.newSingleThreadScheduledExecuto
 public class ScheduledAsync extends AbstractAsync {
     private static final ScheduledExecutorService executor = newSingleThreadScheduledExecutor(ScheduledAsync.class, "planner");
 
-    private final Duration delay;
+    private Duration delay = Duration.ZERO;
     private final Duration period;
 
-    public ScheduledAsync(Duration delay, Duration period) {
-        this.delay = delay;
+    public ScheduledAsync(Duration period) {
         this.period = period;
+    }
+
+    public ScheduledAsync delay(Duration delay) {
+        this.delay = this.delay.plus(delay);
+        return this;
     }
 
     @Override
