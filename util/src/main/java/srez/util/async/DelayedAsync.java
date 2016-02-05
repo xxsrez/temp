@@ -39,8 +39,11 @@ public class DelayedAsync extends ScheduledAsync {
         CountDownLatch latch = new CountDownLatch(1);
         Runnable wrapped = () -> executor.execute(
                 () -> {
-                    runnable.run();
-                    latch.countDown();
+                    try {
+                        runnable.run();
+                    } finally {
+                        latch.countDown();
+                    }
                 });
 
         ScheduledFuture<?> future = SCHEDULED_EXECUTOR_SERVICE.schedule(wrapped, getDelay().getNano(), TimeUnit.NANOSECONDS);
