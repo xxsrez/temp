@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import static srez.util.async.NamedDaemonFactory.newSingleThreadScheduledExecutor;
 
 public class ScheduledAsync extends AbstractAsync {
-    private static final ScheduledExecutorService executor = newSingleThreadScheduledExecutor(ScheduledAsync.class, "planner");
+    protected static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = newSingleThreadScheduledExecutor(ScheduledAsync.class, "planner");
 
     private Duration delay = Duration.ZERO;
     private final Duration period;
@@ -45,10 +45,14 @@ public class ScheduledAsync extends AbstractAsync {
     protected Cancellation doExec(Runnable runnable) {
         ScheduledFuture<?> future;
         if (period == null) {
-            future = executor.schedule(runnable, delay.getNano(), TimeUnit.NANOSECONDS);
+            future = SCHEDULED_EXECUTOR_SERVICE.schedule(runnable, delay.getNano(), TimeUnit.NANOSECONDS);
         } else {
-            future = executor.scheduleAtFixedRate(runnable, delay.getNano(), period.getNano(), TimeUnit.NANOSECONDS);
+            future = SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(runnable, delay.getNano(), period.getNano(), TimeUnit.NANOSECONDS);
         }
         return new Cancellation(() -> future.cancel(true));
+    }
+
+    protected Duration getDelay() {
+        return delay;
     }
 }

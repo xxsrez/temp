@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static java.lang.Thread.currentThread;
 import static org.testng.Assert.assertTrue;
-import static srez.util.Delayer.sleep;
 
 public class AsyncTest {
     @Test(invocationTimeOut = 1000)
@@ -35,8 +34,7 @@ public class AsyncTest {
         AtomicBoolean caughtException = new AtomicBoolean();
         Async.instant().exceptionHandler(t -> caughtException.set(true)).exec(() -> {
             throw new RuntimeException();
-        });
-        sleep(10);
+        }).join();
         assertTrue(caughtException.get());
     }
 
@@ -45,8 +43,7 @@ public class AsyncTest {
         AtomicBoolean caughtException = new AtomicBoolean();
         Async.instant().exceptionHandler(t -> caughtException.set(true)).exec(() -> {
             throw new Error();
-        });
-        sleep(10);
+        }).join();
         assertTrue(caughtException.get());
     }
 }

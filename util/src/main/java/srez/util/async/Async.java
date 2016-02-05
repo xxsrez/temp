@@ -3,12 +3,12 @@ package srez.util.async;
 import java.time.Duration;
 
 public interface Async {
-    static ScheduledAsync instant() {
+    static DelayedAsync instant() {
         return delay(Duration.ZERO);
     }
 
-    static ScheduledAsync delay(Duration delay) {
-        return interval(null).delay(delay);
+    static DelayedAsync delay(Duration delay) {
+        return new DelayedAsync().delay(delay);
     }
 
     static ScheduledAsync interval(Duration duration) {
