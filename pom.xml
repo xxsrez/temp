@@ -23,6 +23,7 @@
         <mockito.version>1.10.19</mockito.version>
         <jfreechart.version>1.0.19</jfreechart.version>
         <project.version>0.0.1</project.version>
+        <testng.version>6.9.10</testng.version>
     </properties>
 
     <dependencyManagement>
@@ -75,6 +76,12 @@
         </dependency>
 
         <!-- TESTING -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
