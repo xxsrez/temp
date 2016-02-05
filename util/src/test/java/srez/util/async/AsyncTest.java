@@ -49,5 +49,4 @@ public class AsyncTest {
         sleep(10);
         assertTrue(caughtException.get());
     }
-
 }
