@@ -32,8 +32,8 @@ public class Async {
         return new RepeatAsync(threadCount);
     }
 
-    public static void memoryWatcher() {
-        interval(ofSeconds(30)).exec(() -> {
+    public static Cancellation memoryWatcher() {
+        return interval(ofSeconds(30)).exec(() -> {
             long maxMemory = getRuntime().maxMemory();
             long freeMemory = getRuntime().freeMemory();
             long usedMemory = maxMemory - freeMemory;
