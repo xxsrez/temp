@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static java.lang.Thread.currentThread;
+import static java.time.Duration.ofMillis;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -54,6 +55,21 @@ public class AsyncTest {
     public void testRepeat() throws Exception {
         AtomicInteger counter = new AtomicInteger();
         Cancellation cancellation = Async.repeat().exec(counter::incrementAndGet);
+        Delayer.sleep(100);
+        int checkpoint1 = counter.get();
+        assertTrue(checkpoint1 > 0);
+        cancellation.close();
+        Delayer.sleep(100);
+        int checkpoint2 = counter.get();
+        Delayer.sleep(100);
+        int checkpoint3 = counter.get();
+        assertEquals(checkpoint2, checkpoint3);
+    }
+
+    @Test(invocationTimeOut = 2000)
+    public void testInterval() throws Exception {
+        AtomicInteger counter = new AtomicInteger();
+        Cancellation cancellation = Async.interval(ofMillis(1)).exec(counter::incrementAndGet);
         Delayer.sleep(100);
         int checkpoint1 = counter.get();
         assertTrue(checkpoint1 > 0);
