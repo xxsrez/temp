@@ -18,11 +18,6 @@ public abstract class AbstractAsync {
         return this;
     }
 
-    public AbstractAsync direct() {
-        executor = Runnable::run;
-        return this;
-    }
-
     protected abstract Cancellation doExec(Runnable runnable);
 
     public Cancellation exec(Runnable runnable) {
@@ -37,5 +32,9 @@ public abstract class AbstractAsync {
                         log.error("", e);
                     }
                 }));
+    }
+
+    protected void setExecutor(Executor executor) {
+        this.executor = executor;
     }
 }

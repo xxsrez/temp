@@ -1,5 +1,6 @@
 package srez.util.async;
 
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.util.stream.IntStream.range;
@@ -14,8 +15,9 @@ public class RepeatAsync extends AbstractAsync {
     }
 
     @Override
-    public AbstractAsync direct() {
-        throw new IllegalStateException();
+    public RepeatAsync executor(Executor executor) {
+        super.executor(executor);
+        return this;
     }
 
     @Override

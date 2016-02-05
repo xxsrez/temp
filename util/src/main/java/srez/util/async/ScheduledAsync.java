@@ -1,6 +1,7 @@
 package srez.util.async;
 
 import java.time.Duration;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +17,17 @@ public class ScheduledAsync extends AbstractAsync {
     public ScheduledAsync(Duration delay, Duration period) {
         this.delay = delay;
         this.period = period;
+    }
+
+    @Override
+    public ScheduledAsync executor(Executor executor) {
+        super.executor(executor);
+        return this;
+    }
+
+    public ScheduledAsync direct() {
+        setExecutor(Runnable::run);
+        return this;
     }
 
     @Override
