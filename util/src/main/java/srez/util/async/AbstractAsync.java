@@ -26,22 +26,21 @@ public abstract class AbstractAsync {
         return this;
     }
 
-    protected abstract Cancellation doExec(Runnable runnable);
+    protected abstract Cancellation doExec(Executor executor, Runnable runnable);
 
     public Cancellation exec(Runnable runnable) {
-        return doExec(() ->
-                executor.execute(() -> {
-                    try {
-                        runnable.run();
-                    } catch (Error e) {
-                        exceptionHandler.accept(e);
-                        log.error("", e);
-                        throw e;
-                    } catch (RuntimeException e) {
-                        exceptionHandler.accept(e);
-                        log.error("", e);
-                    }
-                }));
+        return doExec(executor, () -> {
+            try {
+                runnable.run();
+            } catch (Error e) {
+                exceptionHandler.accept(e);
+                log.error("", e);
+                throw e;
+            } catch (RuntimeException e) {
+                exceptionHandler.accept(e);
+                log.error("", e);
+            }
+        });
     }
 
     protected void setExecutor(Executor executor) {

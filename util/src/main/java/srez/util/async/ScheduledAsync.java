@@ -42,13 +42,11 @@ public class ScheduledAsync extends AbstractAsync {
     }
 
     @Override
-    protected Cancellation doExec(Runnable runnable) {
-        ScheduledFuture<?> future;
-        if (period == null) {
-            future = SCHEDULED_EXECUTOR_SERVICE.schedule(runnable, delay.getNano(), TimeUnit.NANOSECONDS);
-        } else {
-            future = SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(runnable, delay.getNano(), period.getNano(), TimeUnit.NANOSECONDS);
-        }
+    protected Cancellation doExec(Executor executor, Runnable runnable) {
+        ScheduledFuture<?> future = SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(
+                () -> executor.execute(runnable),
+                delay.getNano(), period.getNano(), TimeUnit.NANOSECONDS
+        );
         return new Cancellation(() -> future.cancel(true));
     }
 

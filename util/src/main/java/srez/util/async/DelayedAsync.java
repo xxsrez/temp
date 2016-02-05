@@ -35,7 +35,7 @@ public class DelayedAsync extends ScheduledAsync {
     }
 
     @Override
-    protected CancellableFuture doExec(Runnable runnable) {
+    protected CancellableFuture doExec(Executor executor, Runnable runnable) {
         CountDownLatch latch = new CountDownLatch(1);
         Runnable wrapped = () -> {
             runnable.run();
