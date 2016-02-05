@@ -14,14 +14,14 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class AsyncTest {
-    @Test(invocationTimeOut = 1000)
+    @Test(invocationTimeOut = 2000)
     public void testInstant() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
         Async.instant().exec(latch::countDown);
         latch.await();
     }
 
-    @Test
+    @Test(invocationTimeOut = 2000)
     public void testDirect() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<Thread> implThread = new AtomicReference<>();
@@ -33,7 +33,7 @@ public class AsyncTest {
         assertTrue(implThread.get().getName().startsWith("ScheduledAsync-planner"));
     }
 
-    @Test
+    @Test(invocationTimeOut = 2000)
     public void testException() throws Exception {
         AtomicBoolean caughtException = new AtomicBoolean();
         Async.instant().exceptionHandler(t -> caughtException.set(true)).exec(() -> {
@@ -42,7 +42,7 @@ public class AsyncTest {
         assertTrue(caughtException.get());
     }
 
-    @Test
+    @Test(invocationTimeOut = 2000)
     public void testError() throws Exception {
         AtomicBoolean caughtException = new AtomicBoolean();
         Async.instant().exceptionHandler(t -> caughtException.set(true)).exec(() -> {
@@ -52,7 +52,7 @@ public class AsyncTest {
     }
 
     @Test(invocationTimeOut = 2000)
-    public void testRepeat() throws Exception {
+    public void testRepeatCancel() throws Exception {
         AtomicInteger counter = new AtomicInteger();
         Cancellation cancellation = Async.repeat().exec(counter::incrementAndGet);
         Delayer.sleep(100);
@@ -67,7 +67,7 @@ public class AsyncTest {
     }
 
     @Test(invocationTimeOut = 2000)
-    public void testInterval() throws Exception {
+    public void testIntervalCancel() throws Exception {
         AtomicInteger counter = new AtomicInteger();
         Cancellation cancellation = Async.interval(ofMillis(1)).exec(counter::incrementAndGet);
         Delayer.sleep(100);
