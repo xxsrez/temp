@@ -1,9 +1,12 @@
 package srez.util.format;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class SizeUtil {
-    private static final ThreadLocal<DecimalFormat> format = ThreadLocal.withInitial(() -> new DecimalFormat("#.##"));
+    private static final ThreadLocal<DecimalFormat> format = ThreadLocal.withInitial(() ->
+            new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.ENGLISH)));
 
     private static final String[] MODS = {"Gb", "Mb", "Kb"};
 
