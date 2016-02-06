@@ -11,6 +11,8 @@ public class SizeUtil {
     private static final String[] MODS = {"Gb", "Mb", "Kb"};
 
     public static String bytesToString(long bytes) {
+        if (bytes == 1) return "1byte";
+        if (bytes < 0) return "-" + bytesToString(-bytes);
         double bytesDouble = bytes;
         long div = 2L << 30;
         int index = 0;
