@@ -17,7 +17,7 @@ public class SizeUtil {
 
         String postfix = bytes + "bytes";
 
-        while (index <= MODS.length) {
+        while (index < MODS.length) {
             double divided = bytesDouble / div;
             if (divided > 2) {
                 String mod = MODS[index];
