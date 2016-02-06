@@ -26,7 +26,7 @@ public class SizeUtil {
             double divided = abs(bytesDouble) / div;
             if (divided >= 1.6) {
                 String mod = MODS[index];
-                return minus + format.get().format(divided) + mod + " " + postfix;
+                return minus + format.get().format(divided) + mod + "(" + postfix + ")";
             }
             div >>= 10;
             index++;
