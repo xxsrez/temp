@@ -35,8 +35,9 @@ public class Async {
     public static Cancellation memoryWatcher() {
         return interval(ofSeconds(30)).exec(() -> {
             long maxMemory = getRuntime().maxMemory();
+            long totalMemory = getRuntime().totalMemory();
             long freeMemory = getRuntime().freeMemory();
-            long usedMemory = maxMemory - freeMemory;
+            long usedMemory = totalMemory - freeMemory;
             log.info("Memory details {}/{}", bytesToString(usedMemory), bytesToString(maxMemory));
         });
     }
