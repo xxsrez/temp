@@ -28,11 +28,14 @@ public class RepeatAsync extends AbstractAsync {
     }
 
     @Override
-    public Cancellation doExec(Executor executor, Runnable runnable) {
+    public Cancellation doExec(Runnable runnable) {
         AtomicBoolean active = new AtomicBoolean(true);
+
         range(0, threadCount).forEach(i ->
-                executor.execute(() -> {
-                    while (active.get()) runnable.run();
+                doRun(() -> {
+                    while (active.get()) {
+                        doRun(runnable);
+                    }
                 })
         );
         return new Cancellation(() -> active.set(false));

@@ -26,10 +26,14 @@ public abstract class AbstractAsync {
         return this;
     }
 
-    protected abstract Cancellation doExec(Executor executor, Runnable runnable);
+    protected abstract Cancellation doExec(Runnable runnable);
 
     public Cancellation exec(Runnable runnable) {
-        return doExec(executor, () -> {
+        return doExec(runnable);
+    }
+
+    protected Runnable safeRunnable(Runnable runnable) {
+        return () -> {
             try {
                 runnable.run();
             } catch (Error e) {
@@ -40,7 +44,11 @@ public abstract class AbstractAsync {
                 exceptionHandler.accept(e);
                 log.error("", e);
             }
-        });
+        };
+    }
+
+    protected void doRun(Runnable runnable) {
+        executor.execute(safeRunnable(runnable));
     }
 
     protected void setExecutor(Executor executor) {

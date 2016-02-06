@@ -1,7 +1,7 @@
 package srez.util.async;
 
 import java.time.Duration;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -35,19 +35,21 @@ public class DelayedAsync extends ScheduledAsync {
     }
 
     @Override
-    protected CancellableFuture doExec(Executor executor, Runnable runnable) {
-        CountDownLatch latch = new CountDownLatch(1);
-        Runnable wrapped = () -> executor.execute(
+    protected CancellableFuture doExec(Runnable runnable) {
+        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
+        Runnable wrapped = () -> doRun(
                 () -> {
                     try {
                         runnable.run();
-                    } finally {
-                        latch.countDown();
+                        completableFuture.complete(null);
+                    } catch (Error | RuntimeException e) {
+                        completableFuture.completeExceptionally(e);
+                        throw e;
                     }
                 });
 
         ScheduledFuture<?> future = SCHEDULED_EXECUTOR_SERVICE.schedule(wrapped, getDelay().getNano(), TimeUnit.NANOSECONDS);
-        return new CancellableFuture(() -> future.cancel(true), latch);
+        return new CancellableFuture(() -> future.cancel(true), completableFuture);
     }
 
     @Override
