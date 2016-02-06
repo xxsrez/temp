@@ -12,7 +12,7 @@ public class SizeUtil {
 
     public static String bytesToString(long bytes) {
         double bytesDouble = bytes;
-        int div = 2 << 30;
+        long div = 2L << 30;
         int index = 0;
 
         String postfix = bytes + "bytes";
