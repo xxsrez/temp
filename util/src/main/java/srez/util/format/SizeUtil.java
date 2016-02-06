@@ -12,7 +12,7 @@ public class SizeUtil {
         int div = 2 << 30;
         int index = 0;
 
-        String postfix = bytes + "";
+        String postfix = bytes + "bytes";
 
         while (index <= MODS.length) {
             double divided = bytesDouble / div;

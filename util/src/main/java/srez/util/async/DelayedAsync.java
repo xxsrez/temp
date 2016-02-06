@@ -48,7 +48,7 @@ public class DelayedAsync extends ScheduledAsync {
                     }
                 });
 
-        ScheduledFuture<?> future = SCHEDULED_EXECUTOR_SERVICE.schedule(wrapped, getDelay().getNano(), TimeUnit.NANOSECONDS);
+        ScheduledFuture<?> future = SCHEDULED_EXECUTOR_SERVICE.schedule(wrapped, getDelay().toNanos(), TimeUnit.NANOSECONDS);
         return new CancellableFuture(() -> future.cancel(true), completableFuture);
     }
 

@@ -45,7 +45,7 @@ public class ScheduledAsync extends AbstractAsync {
     protected Cancellation doExec(Runnable runnable) {
         ScheduledFuture<?> future = SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(
                 () -> doRun(runnable),
-                delay.getNano(), period.getNano(), TimeUnit.NANOSECONDS
+                delay.toNanos(), period.toNanos(), TimeUnit.NANOSECONDS
         );
         return new Cancellation(() -> future.cancel(true));
     }

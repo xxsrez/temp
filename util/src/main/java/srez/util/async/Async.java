@@ -20,8 +20,8 @@ public class Async {
         return new DelayedAsync().delay(delay);
     }
 
-    public static ScheduledAsync interval(Duration duration) {
-        return new ScheduledAsync(duration);
+    public static ScheduledAsync interval(Duration interval) {
+        return new ScheduledAsync(interval);
     }
 
     public static RepeatAsync repeat() {
