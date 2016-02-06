@@ -71,7 +71,7 @@ public class SizeUtilTest {
         smartAssert(-1L << 30, "-1024Mb");
     }
 
-    private void smartAssert(long bytes, String expected) {
+    private static void smartAssert(long bytes, String expected) {
         String expectedModified = expected.endsWith("bytes") || expected.endsWith("byte") ? expected : expected + "(" + bytes + "bytes" + ")";
         assertEquals(bytesToString(bytes), expectedModified);
     }
