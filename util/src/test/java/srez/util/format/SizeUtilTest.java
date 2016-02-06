@@ -8,37 +8,37 @@ import static srez.util.format.SizeUtil.bytesToString;
 public class SizeUtilTest {
     @Test
     public void test25Gb() throws Exception {
-        smartAssert((long) ((2 << 30) * 2.5), "2.5Gb");
+        smartAssert((long) ((2L << 30) * 2.5), "2.5Gb");
     }
 
     @Test
     public void test2Gb() throws Exception {
-        smartAssert(2 << 31, "2Gb");
+        smartAssert(2L << 31, "2Gb");
     }
 
     @Test
     public void test1024Mb() throws Exception {
-        smartAssert(2 << 30, "1024Mb");
+        smartAssert(2L << 30, "1024Mb");
     }
 
     @Test
     public void test2Mb() throws Exception {
-        smartAssert(2 << 21, "2Mb");
+        smartAssert(2L << 21, "2Mb");
     }
 
     @Test
     public void test1024Kb() throws Exception {
-        smartAssert(2 << 20, "1024Kb");
+        smartAssert(2L << 20, "1024Kb");
     }
 
     @Test
     public void test2Kb() throws Exception {
-        smartAssert(2 << 11, "2Kb");
+        smartAssert(2L << 11, "2Kb");
     }
 
     @Test
     public void test1024b() throws Exception {
-        smartAssert(2 << 10, "1024bytes");
+        smartAssert(2L << 10, "1024bytes");
     }
 
     @Test
@@ -63,12 +63,12 @@ public class SizeUtilTest {
 
     @Test
     public void testM2Gb() throws Exception {
-        smartAssert(-2 << 31, "-2Gb");
+        smartAssert(-2L << 31, "-2Gb");
     }
 
     @Test
     public void testM1024M() throws Exception {
-        smartAssert(-2 << 30, "-1024Mb");
+        smartAssert(-2L << 30, "-1024Mb");
     }
 
     private void smartAssert(long bytes, String expected) {
