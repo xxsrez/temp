@@ -16,7 +16,7 @@ public class SizeUtil {
         if (bytes == 1) return "1byte";
         if (bytes == -1) return "-1byte";
         double bytesDouble = bytes;
-        long div = 2L << 30;
+        long div = 1L << 30;
         int index = 0;
 
         String postfix = bytes + "bytes";
